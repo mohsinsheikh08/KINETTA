@@ -51,9 +51,9 @@ const productSchema = new mongoose.Schema(
     },
     subCategory: {
       type: String,
-      enum: ["Shirts", "Pants", "Shoes", "Accessories"],
+      enum: ["Tops", "Bottoms", "Footwear", "Accessories"],
       required: true,
-      default: "Shirts",
+      default: "Tops",
     },
     sizes: {
       type: [String],
@@ -106,13 +106,13 @@ const productSchema = new mongoose.Schema(
     isActive: {
       type: Boolean,
       required: true,
-      default : true
+      default: true,
     },
     isFeatured: {
       type: Boolean,
       required: true,
-      default: false
-    }
+      default: false,
+    },
   },
   {
     timestamps: true,
