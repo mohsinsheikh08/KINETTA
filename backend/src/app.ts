@@ -1,4 +1,5 @@
 import express from "express";
+import cors from 'cors'
 import authRoutes from "./routes/auth.route";
 import cookieParser from "cookie-parser";
 import productRoutes from "./routes/product.route";
@@ -8,7 +9,10 @@ import chatRoutes from "./routes/chat.route";
 import reviewRoutes from "./routes/review.route";
 import wishlistRoutes from './routes/wishlist.route'
 const app = express();
-
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}))
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/order", orderRoutes);

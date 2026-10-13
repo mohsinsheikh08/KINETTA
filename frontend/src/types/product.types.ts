@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 interface productInfo {
   productName: string;
   productDescription: string;
@@ -34,9 +36,13 @@ export interface productStructure {
   loading: boolean;
   error: string | null;
   products: Product[] | null;
-  getAllProducts: () => void;
+  getAllProducts: () => Promise<Product[]>;
   updateProduct: (data: FormData, id: string) => void;
   deleteProduct: (id: string) => void;
-  getProduct : (id: string) => void;
-  currentProduct: Product | null
+  getProduct: (id: string) => void;
+  currentProduct: Product | null;
+  isOpen: boolean;
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  isWomenOpen: boolean;
+  setIsWomenOpen: Dispatch<SetStateAction<boolean>>;
 }

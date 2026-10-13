@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { createContext, useEffect, useState } from "react";
 import { AuthStructure, User } from "../types/auth.types";
 import { childrenType } from "../types/common.types";
@@ -74,10 +74,14 @@ const AuthProvider = ({ children }: childrenType) => {
       const result = await authService.getMe();
       setUser(result);
     } catch (err) {
-      setUser(null)
+      setUser(null);
       setError("User not found!");
-      if (axios.isAxiosError(err)) {
-        console.log(err.response?.data?.message || "User not found!");
+      if (axios.isAxiosError(err) && err.response?.status === 401) {
+      } else {
+        setError("User not found!");
+        if (axios.isAxiosError(err)) {
+          console.log(err.response?.data?.message || "User not found!");
+        }
       }
     } finally {
       setLoading(false);
@@ -86,12 +90,17 @@ const AuthProvider = ({ children }: childrenType) => {
 
   useEffect(() => {
     const getUser = async () => {
-     await getMe();
+      const hasToken = document.cookie.includes("token");
+
+      if (!hasToken) {
+        setLoading(false);
+        return; // ← API call skip
+      }
+
+      await getMe();
     };
     getUser();
   }, []);
-  
-
 
   const value: AuthStructure = {
     submitting,
@@ -107,4 +116,3 @@ const AuthProvider = ({ children }: childrenType) => {
 };
 
 export default AuthProvider;
-

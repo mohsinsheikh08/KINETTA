@@ -1,17 +1,21 @@
-"use client"
+"use client";
 import { createContext, useState } from "react";
 import { Product, productStructure } from "../types/product.types";
 import { childrenType } from "../types/common.types";
 import productService from "../services/product.service";
 import axios from "axios";
 
-export const ProductContext = createContext<productStructure | undefined>(undefined);
+export const ProductContext = createContext<productStructure | undefined>(
+  undefined,
+);
 const ProductProvider = ({ children }: childrenType) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<null | string>(null);
   const [products, setProducts] = useState<Product[]>([]);
-  const [currentProduct, setCurrentProduct] = useState<Product | null>(null)
-  
+  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isWomenOpen, setIsWomenOpen] = useState(false);
+
   const createProduct = async (data: FormData) => {
     try {
       setError(null);
@@ -27,17 +31,19 @@ const ProductProvider = ({ children }: childrenType) => {
       setLoading(false);
     }
   };
-  const getAllProducts = async () => {
+  const getAllProducts = async (): Promise<Product[]> => {
     try {
       setLoading(true);
       setError(null);
       const result = await productService.getProducts();
       setProducts(result);
+      return result;
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(err.response?.data?.message || "Products not found!");
       }
       setError("Products not found!");
+      return [];
     } finally {
       setLoading(false);
     }
@@ -47,7 +53,7 @@ const ProductProvider = ({ children }: childrenType) => {
       setLoading(true);
       setError(null);
       const result = await productService.getProduct(id);
-      setCurrentProduct(result)
+      setCurrentProduct(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         console.log(err.response?.data?.message || "Product not found!");
@@ -103,7 +109,11 @@ const ProductProvider = ({ children }: childrenType) => {
     updateProduct,
     deleteProduct,
     getProduct,
-    currentProduct
+    currentProduct,
+    isOpen,
+    setIsOpen,
+    setIsWomenOpen,
+    isWomenOpen,
   };
   return (
     <ProductContext.Provider value={value}>{children}</ProductContext.Provider>

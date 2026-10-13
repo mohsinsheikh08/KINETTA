@@ -2,20 +2,21 @@ import { StaticImageData } from "next/image";
 import React from "react";
 
 export interface childrenType {
-    children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export interface VideoPropsType {
-    posterSrc : string,
-    videoSrc: string,
-    mainHeading: string,
-    secondHeading: string,
+  posterSrc: string;
+  videoSrc: string;
+  mainHeading: string;
+  secondHeading: string;
 }
 
 export interface ProductListType {
-    backImage: StaticImageData,
-    frontImage: StaticImageData,
-    heading: string,
-    price: number,
-    detail: string
+  backImage: string;
+  frontImage: string;
+  id: string;
+  price: number;
+  detail: string;
+  colors: string[]
 }
