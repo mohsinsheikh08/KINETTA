@@ -1,9 +1,10 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { UserRound, Heart, Search, Handbag, Menu } from "lucide-react";
+import useProduct from "@/src/hooks/useProduct";
 
 const Navbar = () => {
-  
+  const {isOpen} = useProduct();
   return (
     <div className="flex flex-col  md:hidden ">
       <div className="w-full h-10 flex justify-between p-4 md:p-5">

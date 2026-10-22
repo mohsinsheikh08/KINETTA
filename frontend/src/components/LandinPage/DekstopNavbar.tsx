@@ -126,9 +126,17 @@ const DekstopNavbar = () => {
           >
             SHOP
           </li>
-          <div className="h-100 w-100 absolute left-0 top-12 rounded-md group-hover:opacity-100 opacity-0 bg-white">
-            shop
-          </div>
+           <li
+            onClick={() => {
+              setIsOpen(false);
+              setIsWomenOpen(false);
+            }}
+            className="hover:text-[#282D31] hover:border-b-2 hover:border-black 
+                     border-b-2 border-transparent transition duration-150 
+                     cursor-pointer uppercase pb-1 inline-block"
+          >
+          New Arrivals
+          </li>
         </ul>
 
         <Link href="/">
