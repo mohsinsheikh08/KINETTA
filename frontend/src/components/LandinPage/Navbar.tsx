@@ -4,12 +4,12 @@ import { UserRound, Heart, Search, Handbag, Menu } from "lucide-react";
 import useProduct from "@/src/hooks/useProduct";
 
 const Navbar = () => {
-  const {isOpen} = useProduct();
+  const {isOpen,setIsOpen} = useProduct();
   return (
     <div className="flex flex-col  md:hidden ">
       <div className="w-full h-10 flex justify-between p-4 md:p-5">
         <div className="flex items-center justify-between  gap-5">
-          <Menu />
+          <button onClick={() => {setIsOpen(!isOpen)}} ><Menu /></button>
           <Search />
         </div>
         <div className="flex items-center">

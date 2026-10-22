@@ -8,6 +8,7 @@ import Footer from "../components/LandinPage/Footer";
 import Video from "../components/LandinPage/Video";
 import useProduct from "../hooks/useProduct";
 import { Product } from "../types/product.types";
+import MobileSidebar from "../components/LandinPage/MobileSidebar";
 const Landing = () => {
   const [AllProducts, setAllProducts] = useState<Product[]>([]);
   const { getAllProducts } = useProduct();
@@ -28,7 +29,8 @@ const Landing = () => {
     window.scrollTo({ top: 0 });
   }, []);
   return (
-    <div className="w-full   h-screen ">
+    <div className="w-full h-screen ">
+      <MobileSidebar />
       <Navbar />
       <div className="md:hidden">
         {" "}

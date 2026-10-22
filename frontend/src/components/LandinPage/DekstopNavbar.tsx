@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { UserRound, Heart, Handbag } from "lucide-react";
+import { UserRound, Heart, Handbag, Search } from "lucide-react";
 import Image from "next/image";
 import Video from "./Video";
 import useProduct from "@/src/hooks/useProduct";
@@ -126,7 +126,7 @@ const DekstopNavbar = () => {
           >
             SHOP
           </li>
-           <li
+          <li
             onClick={() => {
               setIsOpen(false);
               setIsWomenOpen(false);
@@ -135,7 +135,14 @@ const DekstopNavbar = () => {
                      border-b-2 border-transparent transition duration-150 
                      cursor-pointer uppercase pb-1 inline-block"
           >
-          New Arrivals
+            New Arrivals
+          </li>
+          <li>
+            <Search
+              className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] hover:border-black 
+                 transition duration-150 
+                   cursor-pointer pb-1 inline-block cursor-pointer transition"
+            />
           </li>
         </ul>
 
@@ -165,7 +172,7 @@ const DekstopNavbar = () => {
             className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] hover:border-b-2 hover:border-black 
                      border-b-2 border-transparent transition duration-150 
                      cursor-pointer pb-1 inline-block cursor-pointer hover:text-[#282D31] transition"
-          />
+          />{" "}
         </div>
       </nav>
 
