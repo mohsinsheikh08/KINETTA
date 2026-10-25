@@ -4,7 +4,7 @@ import { Product } from "@/src/types/product.types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Loading from "../LandingComp/Loading";
+import Loading from "../LandingComp/ProductLoading";
 import { Heart } from "lucide-react";
 import { categoryType } from "@/src/types/common.types";
 const ProductGrid = ({ category, heading }: categoryType) => {
@@ -21,7 +21,7 @@ const ProductGrid = ({ category, heading }: categoryType) => {
   const Mens = Products.filter((product) => product.category === category);
 
   return (
-    <div className="flex flex-col gap-12">
+    <div className="flex flex-col  pb-20 md:p-0">
       <h1 className="font-heading md:pt-20 pt-5 md:pl-10 pl-4 font-semibold  text-3xl sm:text-4xl leading-15 md:text-6xl lg:7xl">
         {heading}
       </h1>
