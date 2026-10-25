@@ -35,8 +35,8 @@ const Video = ({
 
       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
 
-      <div className="absolute inset-0 flex flex-col justify-end sm:justify-center items-start text-white px-6 sm:pt-100 sm:px-12 md:px-20 pb-12 sm:pb-0 md:pt-50">
-        <h1 className="text-2xl font-heading sm:text-5xl md:text-6xl font-bold tracking-wider">
+      <div className="absolute inset-0 flex flex-col justify-end sm:justify-center items-start text-white px-6 sm:pt-60 sm:px-12 md:px-20 pb-12 sm:pb-0 md:pt-50">
+        <h1 className="text-4xl font-heading sm:text-5xl md:text-6xl font-bold tracking-wider">
           {mainHeading}
         </h1>
         <p className="mt-3 sm:mt-4 font-body text-sm sm:text-base md:text-lg tracking-widest uppercase opacity-90">

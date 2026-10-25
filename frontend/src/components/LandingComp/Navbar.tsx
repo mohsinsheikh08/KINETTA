@@ -9,8 +9,8 @@ const Navbar = () => {
     <div className="flex flex-col  md:hidden ">
       <div className="w-full h-10 flex justify-between p-4 md:p-5">
         <div className="flex items-center justify-between  gap-5">
-          <button onClick={() => {setIsOpen(!isOpen)}} ><Menu /></button>
-          <Search />
+          <button onClick={() => {setIsOpen(!isOpen)}} ><Menu size={20} /></button>
+          <Search size={20} />
         </div>
         <div className="flex items-center">
           <Image
@@ -22,9 +22,9 @@ const Navbar = () => {
           />
         </div>
         <div className="flex items-center justify-between gap-5">
-          <UserRound />
-          <Heart />
-          <Handbag />
+          <UserRound size={20} />
+          <Heart size={20} />
+          <Handbag size={20} />
         </div>
       </div>
     </div>

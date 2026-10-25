@@ -1,14 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-import Navbar from "../components/LandinPage/Navbar";
-import DekstopNavbar from "../components/LandinPage/DekstopNavbar";
-import WomenVideo from "../components/LandinPage/WomenVideo";
-import ProductsGrid from "../components/LandinPage/ProductsGrid";
-import Footer from "../components/LandinPage/Footer";
-import Video from "../components/LandinPage/Video";
+import Navbar from "../components/LandingComp/Navbar";
+import DekstopNavbar from "../components/LandingComp/DekstopNavbar";
+import WomenVideo from "../components/LandingComp/WomenVideo";
+import ProductsGrid from "../components/LandingComp/ProductsGrid";
+import Footer from "../components/LandingComp/Footer";
+import Video from "../components/LandingComp/Video";
 import useProduct from "../hooks/useProduct";
 import { Product } from "../types/product.types";
-import MobileSidebar from "../components/LandinPage/MobileSidebar";
+import MobileSidebar from "../components/LandingComp/MobileSidebar";
 const Landing = () => {
   const [AllProducts, setAllProducts] = useState<Product[]>([]);
   const { getAllProducts } = useProduct();
@@ -33,7 +33,6 @@ const Landing = () => {
       <MobileSidebar />
       <Navbar />
       <div className="md:hidden">
-        {" "}
         <Video
           posterSrc="https://ik.imagekit.io/mohsinsheikh08/kinetta/product/men_landing_page_image.jpg?updatedAt=1791542499393"
           videoSrc="https://res.cloudinary.com/epkrapga/video/upload/v1791545885/MenVideoGymWearMobile.mp4"
@@ -43,6 +42,12 @@ const Landing = () => {
       </div>
       <div>
         <DekstopNavbar />
+        <Video
+          secondHeading="Engineered for Performance"
+          mainHeading="MEN'S COLLECTION"
+          posterSrc="https://ik.imagekit.io/mohsinsheikh08/kinetta/product/men_landing_page_image.jpg?updatedAt=1791542499393"
+          videoSrc="https://res.cloudinary.com/epkrapga/video/upload/v1791545885/MenVideoGymWearMobile.mp4"
+        />
         <h1 className="font-heading font-semibold text-3xl pt-7 pl-7 sm:text-5xl">
           MEN&apos;S COLLECTION
         </h1>

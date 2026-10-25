@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { UserRound, Heart, Handbag, Search } from "lucide-react";
 import Image from "next/image";
-import Video from "./Video";
 import useProduct from "@/src/hooks/useProduct";
 import Link from "next/link";
 const DekstopNavbar = () => {
@@ -13,7 +12,7 @@ const DekstopNavbar = () => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+      if (currentScrollY > lastScrollY && currentScrollY > 350) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
@@ -43,6 +42,7 @@ const DekstopNavbar = () => {
       >
         <ul className="hidden md:flex items-center gap-6 font-semibold text-sm uppercase tracking-wider">
           <li className="relative group">
+            <Link href="/mens">
             <span
               className="hover:text-[#282D31] hover:border-b-2 hover:border-black 
                      border-b-2 border-transparent transition duration-150 
@@ -54,67 +54,25 @@ const DekstopNavbar = () => {
             >
               MEN
             </span>
-            <div
-              className={`absolute left-0 top-9 pt-4 
-              bg-white w-70 p-5
-              transition-all duration-200 z-5
-              ${
-                isOpen
-                  ? "opacity-100 visible translate-y-0"
-                  : "opacity-0 invisible -translate-y-2"
-              }
-              md:opacity-0 md:invisible 
-              md:group-hover:opacity-100 md:group-hover:visible`}
-            >
-              <h3 className="font-bold text-xl mb-4">Men&apos;s Collection</h3>
-              <ul className="space-y-2 text-lg  normal-case font-body">
-                <li className="hover:text-[#282D31] cursor-pointer">
-                  T-Shirts
-                </li>
-                <li className="hover:text-[#282D31] cursor-pointer">Hoodies</li>
-                <li className="hover:text-[#282D31] cursor-pointer">Shorts</li>
-                <li className="hover:text-[#282D31] cursor-pointer">Joggers</li>
-              </ul>
-            </div>
+            </Link>
           </li>
 
           <li className="relative group">
-            <span
-              onClick={() => {
-                setIsOpen(false);
-                setIsWomenOpen(!isWomenOpen);
-              }}
-              className="hover:text-[#282D31] hover:border-b-2 hover:border-black 
+            <Link href="/womens">
+              <span
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsWomenOpen(!isWomenOpen);
+                }}
+                className="hover:text-[#282D31] hover:border-b-2 hover:border-black 
                      border-b-2 border-transparent transition duration-150 
                      cursor-pointer pb-1 inline-block"
-            >
-              Women
-            </span>
-            <div
-              className={`absolute left-0 top-9 pt-4 
-              bg-white w-70 p-5
-              transition-all duration-200 z-5
-              ${
-                isWomenOpen
-                  ? "opacity-100 visible translate-y-0"
-                  : "opacity-0 invisible -translate-y-2"
-              }
-              md:opacity-0 md:invisible 
-              md:group-hover:opacity-100 md:group-hover:visible`}
-            >
-              <h3 className="font-bold  text-xl mb-4">
-                Women&apos;s Collection
-              </h3>
-              <ul className="space-y-2 text-lg normal-case font-body">
-                <li className="hover:text-[#282D31] cursor-pointer">
-                  T-Shirts
-                </li>
-                <li className="hover:text-[#282D31] cursor-pointer">Hoodies</li>
-                <li className="hover:text-[#282D31] cursor-pointer">Shorts</li>
-                <li className="hover:text-[#282D31] cursor-pointer">Joggers</li>
-              </ul>
-            </div>
+              >
+                Women
+              </span>
+            </Link>
           </li>
+         <Link href="/shop">
           <li
             onClick={() => {
               setIsOpen(false);
@@ -125,7 +83,7 @@ const DekstopNavbar = () => {
                      cursor-pointer pb-1 inline-block"
           >
             SHOP
-          </li>
+          </li></Link>
           <li
             onClick={() => {
               setIsOpen(false);
@@ -176,19 +134,7 @@ const DekstopNavbar = () => {
         </div>
       </nav>
 
-      <div
-        onClick={() => {
-          setIsOpen(false);
-        }}
-        className="relative w-full h-[80vh] sm:h-screen overflow-hidden"
-      >
-        <Video
-          posterSrc="https://ik.imagekit.io/mohsinsheikh08/kinetta/product/men_landing_page_image.jpg?updatedAt=1791542499393"
-          videoSrc="https://res.cloudinary.com/epkrapga/video/upload/v1791545885/MenVideoGymWearMobile.mp4"
-          mainHeading="MEN'S COLLECTION"
-          secondHeading="Engineered for Performance"
-        />
-      </div>
+ 
     </div>
   );
 };

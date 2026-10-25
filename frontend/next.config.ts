@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  experimental: {
+    imgOptTimeoutInSeconds: 30
+  }
 };
 
 export default nextConfig;
