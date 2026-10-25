@@ -12,7 +12,7 @@ const DekstopNavbar = () => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      if (currentScrollY > lastScrollY && currentScrollY > 350) {
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
       } else {
         setIsVisible(true);
@@ -130,7 +130,7 @@ const DekstopNavbar = () => {
             className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] hover:border-b-2 hover:border-black 
                      border-b-2 border-transparent transition duration-150 
                      cursor-pointer pb-1 inline-block cursor-pointer hover:text-[#282D31] transition"
-          />{" "}
+          />
         </div>
       </nav>
 

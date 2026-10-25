@@ -38,6 +38,7 @@ const Landing = () => {
           videoSrc="https://res.cloudinary.com/epkrapga/video/upload/v1791545885/MenVideoGymWearMobile.mp4"
           mainHeading="MEN'S COLLECTION"
           secondHeading="Engineered for Performance"
+          link="/mens"
         />
       </div>
       <div>
@@ -47,6 +48,7 @@ const Landing = () => {
           mainHeading="MEN'S COLLECTION"
           posterSrc="https://ik.imagekit.io/mohsinsheikh08/kinetta/product/men_landing_page_image.jpg?updatedAt=1791542499393"
           videoSrc="https://res.cloudinary.com/epkrapga/video/upload/v1791545885/MenVideoGymWearMobile.mp4"
+          link="/mens"
         />
         <h1 className="font-heading font-semibold text-3xl pt-7 pl-7 sm:text-5xl">
           MEN&apos;S COLLECTION

@@ -1,11 +1,13 @@
 "use client";
 import useProduct from "@/src/hooks/useProduct";
 import { VideoPropsType } from "@/src/types/common.types";
+import Link from "next/link";
 const Video = ({
   posterSrc,
   videoSrc,
   mainHeading,
   secondHeading,
+  link
 }: VideoPropsType) => {
   const videoHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,9 +44,11 @@ const Video = ({
         <p className="mt-3 sm:mt-4 font-body text-sm sm:text-base md:text-lg tracking-widest uppercase opacity-90">
           {secondHeading}
         </p>
+       <Link href={link}>
         <button className="mt-6 sm:mt-8 px-6 sm:px-8 py-3 bg-white text-black font-semibold uppercase tracking-wider text-sm sm:text-base hover:bg-gray-200 transition">
           Shop Now
         </button>
+        </Link>
       </div>
     </div>
   );
