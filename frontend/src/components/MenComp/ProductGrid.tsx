@@ -3,6 +3,7 @@ import useProduct from "@/src/hooks/useProduct";
 import { Product } from "@/src/types/product.types";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Loading from "../LandingComp/Loading";
 import { Heart } from "lucide-react";
 import { categoryType } from "@/src/types/common.types";
@@ -29,48 +30,54 @@ const ProductGrid = ({ category, heading }: categoryType) => {
           {Mens.map((product) => {
             return (
               <div key={product._id} className="h-140">
-                <div className="relative w-full group aspect-[4/5] bg-gray-50 overflow-hidden group cursor-pointer">
-                  <div>
+                <Link href={`/product/${product._id}`}>
+                  <div className="relative w-full group aspect-[4/5] bg-gray-50 overflow-hidden group cursor-pointer">
                     <div>
-                      <Image
-                        className="object-cover blur-xl scale-110 opacity-30 absolute inset-0 group-hover:opacity-0"
-                        fill
-                        src={product.thumbnail}
-                        alt=""
-                      />
-
-                      <Image
-                        className="object-cover blur-xl scale-110 opacity-30 absolute inset-0 group-hover:opacity-100"
-                        fill
-                        src={product.thumbnail}
-                        alt=""
-                      />
-                    </div>
-
-                    <div className="absolute inset-0 p-2">
-                      <div className="relative w-full h-full">
+                      <div className="relative">
                         <Image
-                          className="object-contain transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+                          className="object-cover  blur-xl scale-110 opacity-30 absolute inset-0 group-hover:opacity-0"
                           fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           src={product.thumbnail}
-                          alt={product.productName}
+                          alt=""
+                          loading="eager"
+                        />
+
+                        <Image
+                          className="object-cover blur-xl scale-110 opacity-30 absolute inset-0 group-hover:opacity-100"
+                          fill
+                          src={product.thumbnail}
+                          alt=""
+                          loading="eager"
                         />
                       </div>
-                    </div>
 
-                    <div className="absolute inset-0 p-2">
-                      <div className="relative w-full h-full">
-                        <Image
-                          className="object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100"
-                          fill
-                          src={product?.images?.[1] || product.thumbnail}
-                          alt={product.productName}
-                        />
+                      <div className="absolute inset-0 p-2">
+                        <div className="relative w-full h-full">
+                          <Image
+                            className="object-contain transition-opacity duration-500 ease-in-out group-hover:opacity-0"
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            src={product.thumbnail}
+                            alt={product.productName}
+                            loading="eager"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="absolute inset-0 p-2">
+                        <div className="relative w-full h-full">
+                          <Image
+                            className="object-contain transition-opacity duration-500 ease-in-out opacity-0 group-hover:opacity-100"
+                            fill
+                            src={product?.images?.[1] || product.thumbnail}
+                            alt={product.productName}
+                            loading="eager"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </Link>
                 <div className="w-full mt-3 flex flex-col gap-3 px-1">
                   {/* 1. Colors Section */}
                   <div className="flex items-center gap-2">

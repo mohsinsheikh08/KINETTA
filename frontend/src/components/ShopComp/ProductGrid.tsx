@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Loading from "../LandingComp/Loading";
 import { Heart } from "lucide-react";
+import Link from "next/link";
 const ProductGrid = ({ heading }: categoryType) => {
       const [Products, setProducts] = useState<Product[]>([]);
   const { getAllProducts, loading } = useProduct();
@@ -27,6 +28,7 @@ const ProductGrid = ({ heading }: categoryType) => {
           {Products.map((product) => {
             return (
               <div key={product._id} className="h-140">
+                 <Link href={`/product/${product._id}`}>
                 <div className="relative w-full group aspect-[4/5] bg-gray-50 overflow-hidden group cursor-pointer">
                   <div>
                     <div>
@@ -69,6 +71,7 @@ const ProductGrid = ({ heading }: categoryType) => {
                     </div>
                   </div>
                 </div>
+                </Link>
                 <div className="w-full mt-3 flex flex-col gap-3 px-1">
                   {/* 1. Colors Section */}
                   <div className="flex items-center gap-2">

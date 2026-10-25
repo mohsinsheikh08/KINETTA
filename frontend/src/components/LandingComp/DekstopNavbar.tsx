@@ -5,9 +5,13 @@ import { UserRound, Heart, Handbag, Search } from "lucide-react";
 import Image from "next/image";
 import useProduct from "@/src/hooks/useProduct";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
 const DekstopNavbar = () => {
   const [isVisible, setIsVisible] = useState(true);
-  const { isOpen, setIsOpen, isWomenOpen, setIsWomenOpen } = useProduct();
+  const { setIsOpen, setIsWomenOpen } = useProduct();
+  const pathname = usePathname();
+
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
@@ -17,13 +21,18 @@ const DekstopNavbar = () => {
       } else {
         setIsVisible(true);
       }
-
       lastScrollY = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const getLinkClass = (path: string) => {
+    return `hover:text-[#282D31] hover:border-black border-b-2 pb-1 inline-block transition duration-150 cursor-pointer uppercase ${
+      pathname === path ? "border-black text-[#282D31]" : "border-transparent"
+    }`;
+  };
 
   return (
     <div className="hidden md:flex">
@@ -40,70 +49,74 @@ const DekstopNavbar = () => {
                 transition-transform duration-300
                 ${isVisible ? "translate-y-0" : "-translate-y-32"}`}
       >
-        <ul className="hidden md:flex items-center gap-6 font-semibold text-sm uppercase tracking-wider">
+        <ul className="hidden md:flex items-center gap-6 font-semibold text-sm tracking-wider">
+          {/* MEN */}
           <li className="relative group">
             <Link href="/mens">
-            <span
-              className="hover:text-[#282D31] hover:border-b-2 hover:border-black 
-                     border-b-2 border-transparent transition duration-150 
-                     cursor-pointer pb-1 inline-block"
-              onClick={() => {
-                setIsOpen(!isOpen);
-                setIsWomenOpen(false);
-              }}
-            >
-              MEN
-            </span>
+              <span
+                className={getLinkClass("/mens")}
+                onClick={() => {
+                  setIsOpen(!setIsOpen); 
+                  setIsWomenOpen(false);
+                }}
+              >
+                MEN
+              </span>
             </Link>
           </li>
 
+          {/* WOMEN */}
           <li className="relative group">
             <Link href="/womens">
               <span
                 onClick={() => {
                   setIsOpen(false);
-                  setIsWomenOpen(!isWomenOpen);
+                  setIsWomenOpen(false);
                 }}
-                className="hover:text-[#282D31] hover:border-b-2 hover:border-black 
-                     border-b-2 border-transparent transition duration-150 
-                     cursor-pointer pb-1 inline-block"
+                className={getLinkClass("/womens")}
               >
                 Women
               </span>
             </Link>
           </li>
-         <Link href="/shop">
-          <li
-            onClick={() => {
-              setIsOpen(false);
-              setIsWomenOpen(false);
-            }}
-            className="hover:text-[#282D31] hover:border-b-2 hover:border-black 
-                     border-b-2 border-transparent transition duration-150 
-                     cursor-pointer pb-1 inline-block"
-          >
-            SHOP
-          </li></Link>
-          <li
-            onClick={() => {
-              setIsOpen(false);
-              setIsWomenOpen(false);
-            }}
-            className="hover:text-[#282D31] hover:border-b-2 hover:border-black 
-                     border-b-2 border-transparent transition duration-150 
-                     cursor-pointer uppercase pb-1 inline-block"
-          >
-            New Arrivals
-          </li>
+
+          {/* SHOP */}
           <li>
-            <Search
-              className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] hover:border-black 
-                 transition duration-150 
-                   cursor-pointer pb-1 inline-block cursor-pointer transition"
-            />
+            <Link href="/shop">
+              <span
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsWomenOpen(false);
+                }}
+                className={getLinkClass("/shop")}
+              >
+                SHOP
+              </span>
+            </Link>
+          </li>
+
+          {/* NEW ARRIVALS */}
+          <li>
+            <Link href="/new">
+              <span
+                onClick={() => {
+                  setIsOpen(false);
+                  setIsWomenOpen(false);
+                }}
+                className={getLinkClass("/new")}
+              >
+                New Arrivals
+              </span>
+            </Link>
+          </li>
+
+          {/* SEARCH ICON */}
+          <li>
+            <Search className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
           </li>
         </ul>
 
+        {/* LOGO */}
         <Link href="/">
           <Image
             className="w-24 sm:w-28 md:w-32 h-auto"
@@ -115,26 +128,13 @@ const DekstopNavbar = () => {
           />
         </Link>
 
+        {/* RIGHT ICONS */}
         <div className="flex items-center gap-4 sm:gap-5">
-          <UserRound
-            className="w-5 h-5 hover:text-[#282D31] hover:border-b-2 hover:border-black 
-                     border-b-2 border-transparent transition duration-150 
-                     cursor-pointer pb-1 inline-block sm:w-6 sm:h-6 cursor-pointer hover:text-[#282D31] transition"
-          />
-          <Heart
-            className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] hover:border-b-2 hover:border-black 
-                     border-b-2 border-transparent transition duration-150 
-                     cursor-pointer pb-1 inline-block cursor-pointer hover:text-[#282D31] transition"
-          />
-          <Handbag
-            className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] hover:border-b-2 hover:border-black 
-                     border-b-2 border-transparent transition duration-150 
-                     cursor-pointer pb-1 inline-block cursor-pointer hover:text-[#282D31] transition"
-          />
+          <UserRound className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+          <Heart className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+          <Handbag className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
         </div>
       </nav>
-
- 
     </div>
   );
 };

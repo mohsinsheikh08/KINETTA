@@ -52,6 +52,7 @@ const ProductProvider = ({ children }: childrenType) => {
     try {
       setLoading(true);
       setError(null);
+      console.log(id)
       const result = await productService.getProduct(id);
       setCurrentProduct(result);
     } catch (err) {

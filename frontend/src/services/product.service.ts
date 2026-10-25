@@ -18,7 +18,7 @@ const productService = {
   },
   getProduct: async (id: string): Promise<Product> => {
     const response = await api.get<{ message: string; product: Product }>(
-      `/prodcts/${id}`,
+      `/products/${id}`,
     );
     return response.data.product;
   },
