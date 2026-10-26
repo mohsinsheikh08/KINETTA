@@ -40,6 +40,7 @@ const ReviewProvider = ({ children }: childrenType) => {
       setLoading(true);
       setError(null);
       const result = await reviewService.getProductReviews(id);
+      console.log(result)
       setReview(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {

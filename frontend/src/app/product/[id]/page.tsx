@@ -5,7 +5,7 @@ import Navbar from "@/src/components/LandingComp/Navbar";
 import useProduct from "@/src/hooks/useProduct";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
-import ProductPage from '@/src/components/ProductComp/ProductPage'
+import ProductPage from "@/src/components/ProductComp/ProductPage";
 import Footer from "@/src/components/LandingComp/Footer";
 
 const ProductDetail = () => {
@@ -33,7 +33,9 @@ const ProductDetail = () => {
       <MobileSidebar />
       <Navbar />
       <ProductPage />
-      {/* <Footer /> */}
+      <div className="pt-10">
+        <Footer />
+      </div>
     </div>
   );
 };

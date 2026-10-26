@@ -16,18 +16,14 @@ const ProductPage = () => {
     };
     productHandler();
   }, []);
-  console.log(Products);
   const today = new Date().getTime();
-  const oneDay = 24 * 60 * 60 * 1000;
-  console.log(oneDay);
+  const oneDay = 24 * 60 * 60 * 1000;;
   const productsUpdate = Products.filter((product) => {
     const productTime = new Date(product.createdAt).getTime();
     const difference = today - productTime;
     const time = Math.floor(difference / oneDay);
     return time <= 7;
   });
-
-  console.log(productsUpdate)
   return (
     <div className="flex flex-col gap-12 pb-20 md:pb-10">
       <h1 className="font-heading md:pt-20 pt-5 md:pl-10 pl-4 font-semibold  text-3xl sm:text-4xl leading-15 md:text-6xl lg:7xl">
