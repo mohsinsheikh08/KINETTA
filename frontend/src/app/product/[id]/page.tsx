@@ -33,7 +33,7 @@ const ProductDetail = () => {
       <MobileSidebar />
       <Navbar />
       <ProductPage />
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

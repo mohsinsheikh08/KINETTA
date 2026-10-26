@@ -16,3 +16,7 @@ body {
   color: var(--color-text);
   font-family: var(--font-body);
 }
+
+.premium-scrollbar::-webkit-scrollbar{
+  background-color: green;
+}

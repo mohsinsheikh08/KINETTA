@@ -19,7 +19,7 @@ const ProductGrid = ({ heading }: categoryType) => {
     handleProducts();
   }, []);
   return (
-    <div className="flex flex-col gap-12 pb-20 md:pb-0">
+    <div className="flex flex-col gap-12 pb-20 md:pb-10">
       <h1 className="font-heading md:pt-20 pt-5 md:pl-10 pl-4 font-semibold  text-3xl sm:text-4xl leading-15 md:text-6xl lg:7xl">
         {heading}
       </h1>
