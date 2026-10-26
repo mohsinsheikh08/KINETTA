@@ -2,6 +2,7 @@ import { productModel } from "../models/product.model";
 import { Response } from "express";
 import { AuthReports } from "../types/types";
 import uploadSmart from "../utils/uploadSmart";
+import reviewModel from "../models/reviews.model";
 const createProduct = async (req: AuthReports, res: Response) => {
   try {
     const userId = req.user?.id;
@@ -47,7 +48,7 @@ const createProduct = async (req: AuthReports, res: Response) => {
     const stockNum = Number(stock);
     const sizesArray = sizes
       .split(",")
-      .map((size: string) => size.trim()  .toUpperCase());
+      .map((size: string) => size.trim().toUpperCase());
     const colorsArray = colors
       .split(",")
       .map((color: string) => color.trim().toLowerCase());
@@ -56,7 +57,6 @@ const createProduct = async (req: AuthReports, res: Response) => {
     const taxValue = price * (taxAmount / 100);
     const final = price - discountValue + taxValue;
     const finalProductPrice = Math.round(final * 100) / 100;
-
     const product = await productModel.create({
       productName,
       productDescription,

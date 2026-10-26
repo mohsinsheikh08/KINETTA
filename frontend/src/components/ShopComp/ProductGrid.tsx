@@ -74,32 +74,21 @@ const ProductGrid = ({ heading }: categoryType) => {
                     </div>
                   </Link>
                   <div className="w-full mt-3 flex flex-col gap-3 px-1">
-                    {/* 1. Colors Section */}
-                    <div className="flex items-center gap-2">
-                      {product.colors?.map((color, index) => (
-                        <div
-                          key={index}
-                          className="w-5 h-5 rounded-full border border-gray-200"
-                          style={{ backgroundColor: color.toLowerCase() }}
-                          title={color}
-                        />
-                      ))}
-                    </div>
 
-                    {/* 2. Product Name and Heart Icon Section */}
+
                     <div className="flex justify-between items-start gap-2">
-                      {/* Product Name */}
+
                       <p className="text-[13px] md:text-[16px] font-medium text-gray-900 tracking-wide truncate">
                         {product.productName}
                       </p>
 
-                      {/* Heart Icon (Wishlist) */}
+
                       <button className="text-gray-400 hover:text-black transition-colors duration-300">
                         <Heart size={18} strokeWidth={1.5} />
                       </button>
                     </div>
 
-                    {/* 3. Price Section (Next Line) */}
+
                     <div className="flex items-center">
                       <p className="text-[13px] md:text-sm font-semibold text-gray-900 whitespace-nowrap">
                         Rs. {product.price?.toLocaleString() || "0"}

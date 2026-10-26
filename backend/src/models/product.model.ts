@@ -45,7 +45,7 @@ const productSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["Men", "Women",],
+      enum: ["Men", "Women"],
       required: true,
       default: "Men",
     },
