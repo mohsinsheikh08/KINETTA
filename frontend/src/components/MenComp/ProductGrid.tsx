@@ -33,7 +33,7 @@ const ProductGrid = ({ category, heading }: categoryType) => {
                 <Link href={`/product/${product._id}`}>
                   <div className="relative w-full group aspect-[4/5] bg-gray-50 overflow-hidden group cursor-pointer">
                     <div>
-                      <div className="relative">
+                      <div className="absolute inset-0">
                         <Image
                           className="object-cover  blur-xl scale-110 opacity-30 absolute inset-0 group-hover:opacity-0"
                           fill
@@ -47,7 +47,6 @@ const ProductGrid = ({ category, heading }: categoryType) => {
                           fill
                           src={product.thumbnail}
                           alt=""
-                          loading="eager"
                         />
                       </div>
 
@@ -59,7 +58,6 @@ const ProductGrid = ({ category, heading }: categoryType) => {
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             src={product.thumbnail}
                             alt={product.productName}
-                            loading="eager"
                           />
                         </div>
                       </div>
@@ -71,7 +69,6 @@ const ProductGrid = ({ category, heading }: categoryType) => {
                             fill
                             src={product?.images?.[1] || product.thumbnail}
                             alt={product.productName}
-                            loading="eager"
                           />
                         </div>
                       </div>
@@ -116,7 +113,10 @@ const ProductGrid = ({ category, heading }: categoryType) => {
           })}
         </div>
       ) : (
-        <Loading />
+        <div className="pt-12">
+          {" "}
+          <Loading />
+        </div>
       )}
     </div>
   );
