@@ -24,5 +24,4 @@ export interface ProductListType {
   id: string;
   price: number;
   detail: string;
-  colors: string[]
 }

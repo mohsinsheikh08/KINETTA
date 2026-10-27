@@ -58,7 +58,6 @@ const Landing = () => {
             return (
               <ProductsGrid
                 key={men.id}
-                colors={men.colors}
                 id={men.id}
                 backImage={men?.images[1]}
                 frontImage={men.thumbnail}
@@ -78,7 +77,6 @@ const Landing = () => {
               <ProductsGrid
                 key={women.id}
                 id={women.id}
-                colors={women.colors}
                 backImage={women?.images[1]}
                 frontImage={women.thumbnail}
                 price={women.price}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { ProductListType } from "@/src/types/common.types";
 import useProduct from "@/src/hooks/useProduct";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const ProductsGrid = ({
   backImage,
@@ -11,10 +12,7 @@ const ProductsGrid = ({
   id,
   price,
   detail,
-  colors,
 }: ProductListType) => {
- 
-
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
@@ -41,36 +39,29 @@ const ProductsGrid = ({
       <div className="flex pt-5">
         <div className="w-full h-full">
           <div className="w-70 h-full p-2">
-            <div className="relative w-60 cursosr-pointer h-80 overflow-hidden">
-              <Image
-                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                style={{ opacity: isHovered ? 0 : 1 }}
-                src={frontImage}
-                width={1000}
-                height={1000}
-                alt="Product"
-              />
+            <Link href={`product/${id}`}>
+              <div className="relative w-60 cursosr-pointer h-80 overflow-hidden">
+                <Image
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                  style={{ opacity: isHovered ? 0 : 1 }}
+                  src={frontImage}
+                  width={1000}
+                  height={1000}
+                  alt="Product"
+                />
 
-              <Image
-                className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                style={{ opacity: isHovered ? 1 : 0 }}
-                src={backImage}
-                width={1000}
-                height={1000}
-                alt="Product - alternate"
-              />
-            </div>
+                <Image
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                  style={{ opacity: isHovered ? 1 : 0 }}
+                  src={backImage}
+                  width={1000}
+                  height={1000}
+                  alt="Product - alternate"
+                />
+              </div>
+            </Link>
 
             <div className="flex pt-2 flex-col">
-              <div className="w-full flex items-center gap-2 h-10">
-                {colors.map((color, idx) => (
-                  <div
-                    key={idx}
-                    className="w-7 h-7 rounded-full border border-gray-300"
-                    style={{ backgroundColor: color }}
-                  />
-                ))}
-              </div>
               <p className="font-body flex items-center pt-2 font-semibold">
                 {detail}
               </p>
