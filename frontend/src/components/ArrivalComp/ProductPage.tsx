@@ -17,7 +17,7 @@ const ProductPage = () => {
     productHandler();
   }, []);
   const today = new Date().getTime();
-  const oneDay = 24 * 60 * 60 * 1000;;
+  const oneDay = 24 * 60 * 60 * 1000;
   const productsUpdate = Products.filter((product) => {
     const productTime = new Date(product.createdAt).getTime();
     const difference = today - productTime;
@@ -80,8 +80,6 @@ const ProductPage = () => {
                     </div>
                   </Link>
                   <div className="w-full mt-3 flex flex-col gap-3 px-1">
-             
-
                     {/* 2. Product Name and Heart Icon Section */}
                     <div className="flex justify-between items-start gap-2">
                       {/* Product Name */}

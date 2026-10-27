@@ -7,6 +7,7 @@ import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import ProductPage from "@/src/components/ProductComp/ProductPage";
 import Footer from "@/src/components/LandingComp/Footer";
+import Loading from "@/src/components/LandingComp/Loading";
 
 const ProductDetail = () => {
   const params = useParams();
@@ -21,9 +22,7 @@ const ProductDetail = () => {
 
   if (loading || !currentProduct) {
     return (
-      <div className="h-screen flex items-center justify-center font-bold text-2xl">
-        Loading Product...
-      </div>
+    <Loading/ >
     );
   }
 

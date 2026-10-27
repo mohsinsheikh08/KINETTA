@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Loading = () => {
+const GridLoading= () => {
   return (
     <div className="w-full min-h-screen bg-[#F9F9F9] flex justify-between">
       {/* Grid Container - Exactly like your products grid */}
@@ -32,4 +32,4 @@ const Loading = () => {
   );
 };
 
-export default Loading;
+export default GridLoading;
