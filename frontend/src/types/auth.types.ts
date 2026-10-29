@@ -17,15 +17,10 @@ export interface User extends Register {
 export interface AuthStructure {
   error: string | null;
   loading: boolean;
-  Register: (
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-  ) => Promise<void>;
-  Login: (email: string, password: string) => Promise<void>;
+  Register: (data: Register) => Promise<void>;
+  Login: (data: Login) => Promise<void>;
   Logout: () => void;
   getMe: () => Promise<void>;
-  submitting : boolean,
-  user: User | null
+  submitting: boolean;
+  user: User | null;
 }
