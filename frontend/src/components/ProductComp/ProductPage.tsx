@@ -106,7 +106,7 @@ const ProductPage = () => {
             </p>
           </div>
           <div className="w-full pt-4">
-            <p className="text-sm font-medium mb-3 text-gray-800 tracking-wide uppercase">
+            <p className="text-sm font-body font-bold mb-3 text-gray-800 tracking-wide uppercase">
               Select Size
             </p>
             <div className="grid grid-cols-5 ">
@@ -115,7 +115,7 @@ const ProductPage = () => {
                   onClick={() => {
                     setSelectedSize(size);
                   }}
-                  className={`flex items-center justify-center p-5 border text-sm cursor-pointer transition-all duration-200
+                  className={`flex items-center justify-center p-5 border text-sm cursor-pointer transition-all duration-200 
               ${
                 selectedSize === size
                   ? "bg-black hover:bg-black/80 text-white border-black"
@@ -129,7 +129,7 @@ const ProductPage = () => {
             </div>
           </div>
           <div className="w-full pt-6">
-            <p className="text-sm font-medium mb-3 text-gray-800 tracking-wide uppercase">
+            <p className=" font-body font-bold mb-3 text-gray-800 tracking-wide uppercase">
               Select Color:{" "}
               <span className="text-gray-500 font-normal capitalize">
                 {selectedColor}
@@ -176,13 +176,19 @@ const ProductPage = () => {
             <span className="text-lg font-body font-medium text-black w-4 text-center">
               {count}
             </span>
-            <button className="group flex items-center justify-center w-8 h-8 border border-gray-300 rounded-full hover:border-black transition-colors duration-300">
+            <button
+              onClick={() => {
+                setCount(count < currentProduct.stock ? count + 1 : count);
+              }}
+              className={` ${
+                count >= currentProduct.stock
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer hover:border-black"
+              } group flex items-center justify-center w-8 h-8 border border-gray-300 rounded-full  transition-colors duration-300`}
+            >
               <Plus
-                onClick={() => {
-                  setCount(count + 1);
-                }}
                 size={16}
-                className="text-gray-500 group-hover:text-black transition-colors"
+                className={` text-gray-500 group-hover:text-black transition-colors`}
               />
             </button>
           </div>

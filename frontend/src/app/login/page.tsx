@@ -1,8 +1,8 @@
-import LoginElement from "@/src/components/LoginComp/LoginElement";
+import LoginElement from "@/src/components/AuthComp/LoginElement";
 
 const LoginPage = () => {
   return (
-    <div className="">
+    <div>
      <LoginElement />
     </div>
   );
