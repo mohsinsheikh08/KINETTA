@@ -194,7 +194,6 @@ const getAllUsers = async (req: AuthReports, res: Response) => {
     });
   }
 };
-// backend/src/controllers/auth.controller.ts (ya user.controller.ts)
 
 const deleteUser = async (req: AuthReports, res: Response) => {
   try {

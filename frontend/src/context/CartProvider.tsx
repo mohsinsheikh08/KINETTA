@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { createContext, useState } from "react";
 import { childrenType } from "../types/common.types";
 import {
@@ -26,9 +26,8 @@ const CartProvider = ({ children }: childrenType) => {
       setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log(err.response?.data?.message || "Add to cart failed!");
+        setError(err.response?.data?.message || "Add to cart failed!");
       }
-      setError("Add to cart failed!");
     } finally {
       setLoading(false);
     }
@@ -73,7 +72,7 @@ const CartProvider = ({ children }: childrenType) => {
     try {
       setLoading(true);
       setError(null);
-       await cartService.deleteProductInCart(id);
+      await cartService.deleteProductInCart(id);
       setCart((prev) =>
         prev
           ? {
