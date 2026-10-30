@@ -22,7 +22,6 @@ const MobileSidebar = () => {
       className={`fixed md:hidden inset-0 z-50 ${isOpen ? "" : "pointer-events-none"}`}
       inert={!isOpen}
     >
-      {/* Dark backdrop */}
       <div
         onClick={() => {
           setIsOpen(!isOpen);
@@ -32,7 +31,7 @@ const MobileSidebar = () => {
         }`}
       />
 
-      {/* Sidebar panel */}
+
       <aside
         role="dialog"
         aria-modal="true"
@@ -41,7 +40,7 @@ const MobileSidebar = () => {
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        {/* Top: logo with a full-width bottom border */}
+
         <header className="flex w-full items-center justify-between border-b border-black/20 px-5 py-4">
           <Link
             href="/"
@@ -68,7 +67,6 @@ const MobileSidebar = () => {
           </button>
         </header>
 
-        {/* Menu */}
         <nav className="flex-1 overflow-y-auto px-5 py-2">
           <ul>
             {collections.map((item, idx) => (
@@ -84,7 +82,6 @@ const MobileSidebar = () => {
           </ul>
         </nav>
 
-        {/* Bottom: image, full width of the panel with side padding, 1/3 height */}
         <div className="h-1/3 shrink-0 px-5 pb-5 pt-3">
           <div className="relative h-full w-full overflow-hidden rounded-lg bg-black/5">
             <Image

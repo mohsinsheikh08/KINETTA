@@ -1,12 +1,7 @@
 "use client";
 import { createContext, useState } from "react";
 import { childrenType } from "../types/common.types";
-import {
-  Cart,
-  createCart,
-  updateCart,
-  cartStructure,
-} from "../types/cart.types";
+import { Cart, createCart, updateCart, cartStructure } from "../types/cart.types";
 import cartService from "../services/cart.service";
 import axios from "axios";
 
@@ -17,13 +12,12 @@ const CartProvider = ({ children }: childrenType) => {
   const [error, setError] = useState<string | null>(null);
   const [cart, setCart] = useState<Cart | null>(null);
 
-  // ============ ADD TO CART ============
   const createCart = async (data: createCart) => {
     try {
       setError(null);
       setLoading(true);
-      const result = await cartService.createCart(data);
-      setCart(result);
+      const result = await cartService.createCart(data); // Yahan ab direct Cart aayega
+      setCart(result); 
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || "Add to cart failed!");
@@ -33,12 +27,11 @@ const CartProvider = ({ children }: childrenType) => {
     }
   };
 
-  // ============ GET CART ============
   const getCart = async () => {
     try {
       setLoading(true);
       setError(null);
-      const result = await cartService.getCart();
+      const result = await cartService.getCart(); // Yahan ab direct Cart aayega
       setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -50,24 +43,21 @@ const CartProvider = ({ children }: childrenType) => {
     }
   };
 
-  // ============ UPDATE CART (quantity) ============
   const updateCart = async (data: updateCart) => {
     try {
       setLoading(true);
       setError(null);
-      const result = await cartService.updateCart(data);
+      const result = await cartService.updateCart(data); // Yahan ab direct Cart aayega
       setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log(err.response?.data?.message || "Cart update failed!");
+        setError("Cart update failed!");
       }
-      setError("Cart update failed!");
     } finally {
       setLoading(false);
     }
   };
 
-  // ============ REMOVE ONE PRODUCT ============
   const deleteProductInCart = async (id: string) => {
     try {
       setLoading(true);
@@ -83,15 +73,13 @@ const CartProvider = ({ children }: childrenType) => {
       );
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log(err.response?.data?.message || "Product removal failed!");
+        setError("Product removal failed!");
       }
-      setError("Product removal failed!");
     } finally {
       setLoading(false);
     }
   };
 
-  // ============ CLEAR CART ============
   const clearCart = async () => {
     try {
       setLoading(true);
@@ -100,9 +88,8 @@ const CartProvider = ({ children }: childrenType) => {
       setCart(null);
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        console.log(err.response?.data?.message || "Clear cart failed!");
+        setError("Clear cart failed!");
       }
-      setError("Clear cart failed!");
     } finally {
       setLoading(false);
     }

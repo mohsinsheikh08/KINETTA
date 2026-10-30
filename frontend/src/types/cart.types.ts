@@ -7,14 +7,6 @@ export interface createCart {
 
 export type updateCart = createCart;
 
-export interface User {
-  _id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-}
-
 export interface cartProduct {
   _id: string;
   productName: string;
@@ -25,26 +17,35 @@ export interface cartProduct {
 }
 
 export interface cartItems {
+  _id: string; // Cart item ki apni ID
   product: cartProduct;
   quantity: number;
   size: string;
   color: string;
 }
 
+// Asli Cart Object
 export interface Cart {
-  message: string;
   _id: string;
-  user: User;
+  user: string;
   items: cartItems[];
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+// Backend ka poora response
+export interface CartResponse {
+  message: string;
+  cart: Cart;
 }
 
 export interface cartStructure {
   loading: boolean;
   error: string | null;
   createCart: (data: createCart) => Promise<void>;
-  getCart: (id: string) => Promise<void>;
+  getCart: () => Promise<void>;
   clearCart: () => Promise<void>;
   updateCart: (data: updateCart) => Promise<void>;
   deleteProductInCart: (id: string) => Promise<void>;
-  cart: Cart | null;
+  cart: Cart | null; // Yahan Cart object aayega, response nahi
 }

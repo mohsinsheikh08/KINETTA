@@ -10,10 +10,15 @@ export const AuthContext = createContext<AuthStructure | undefined>(undefined);
 
 const AuthProvider = ({ children }: childrenType) => {
   const navigate = useRouter();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<null | User>(null);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   const Register = async (data: Register) => {
     try {
       setError(null);
@@ -35,7 +40,6 @@ const AuthProvider = ({ children }: childrenType) => {
       setSubmitting(true);
       const result = await authService.login(data);
       setUser(result);
-      console.log(result);
       navigate.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -63,7 +67,6 @@ const AuthProvider = ({ children }: childrenType) => {
   const getMe = async () => {
     try {
       setError(null);
-      setLoading(true);
       const result = await authService.getMe();
       setUser(result);
     } catch (err) {
@@ -83,13 +86,7 @@ const AuthProvider = ({ children }: childrenType) => {
 
   useEffect(() => {
     const getUser = async () => {
-      const hasToken = document.cookie.includes("token");
-
-      if (!hasToken) {
-        setLoading(false);
-        return; // ← API call skip
-      }
-
+      console.log(user)
       await getMe();
     };
     getUser();

@@ -2,7 +2,7 @@
 import useProduct from "@/src/hooks/useProduct";
 import { Product } from "@/src/types/product.types";
 import { useEffect, useState } from "react";
-import Loading from "../LandingComp/ProductLoading";
+import ProductLoading from "@/src/components/LandingComp/ProductLoading";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,7 +31,7 @@ const ProductPage = () => {
       <h1 className="font-heading md:pt-20 pt-5 md:pl-10 pl-4 font-semibold  text-3xl sm:text-4xl leading-15 md:text-6xl lg:7xl">
         Kinetta Arrivals
       </h1>
-      {!loading ? (
+      {loading ? (
         productsUpdate.length ? (
           <div className="w-full grid grid-cols-1  min-[400px]:grid-cols-2 md:grid-cols-3 min-[400px]:gap-2 p-4">
             {productsUpdate.map((product) => {
@@ -83,20 +83,16 @@ const ProductPage = () => {
                       </div>
                     </Link>
                     <div className="w-full mt-3 flex flex-col gap-3 px-1">
-                      {/* 2. Product Name and Heart Icon Section */}
                       <div className="flex justify-between items-start gap-2">
-                        {/* Product Name */}
                         <p className="text-[13px] md:text-[16px] font-medium text-gray-900 tracking-wide truncate">
                           {product.productName}
                         </p>
 
-                        {/* Heart Icon (Wishlist) */}
                         <button className="text-gray-400 hover:text-black transition-colors duration-300">
                           <Heart size={18} strokeWidth={1.5} />
                         </button>
                       </div>
 
-                      {/* 3. Price Section (Next Line) */}
                       <div className="flex items-center">
                         <p className="text-[13px] md:text-sm font-semibold text-gray-900 whitespace-nowrap">
                           Rs. {product.price?.toLocaleString() || "0"}
@@ -109,10 +105,10 @@ const ProductPage = () => {
             })}
           </div>
         ) : (
-          <Empty />
+          <ProductLoading />
         )
       ) : (
-        <div className="w-full h-screen bg-red-900 flex items-center ">
+        <div className="w-full h-screen  flex items-center ">
           {" "}
           <Empty />
         </div>
