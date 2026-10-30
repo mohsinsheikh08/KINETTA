@@ -11,6 +11,13 @@ import useCart from "@/src/hooks/useCart";
 
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
+const formatPrice = (value: number): string => {
+  return new Intl.NumberFormat("en-PK", {
+    style: "currency",
+    currency: "PKR",
+    minimumFractionDigits: 0,
+  }).format(value);
+};
 const ProductPage = () => {
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedColor, setSelectedColor] = useState("black");
@@ -19,8 +26,8 @@ const ProductPage = () => {
   const { createCart, loading, error } = useCart();
   const { currentProduct } = useProduct();
   const { getProductReviews, review } = useReview();
-  const [count, setCount] = useState(1); // Default 1 kiya, 0 nahi
-  
+  const [count, setCount] = useState(1);
+
   useEffect(() => {
     const fetchReviews = async () => {
       await getProductReviews(id);
@@ -43,9 +50,7 @@ const ProductPage = () => {
 
   return (
     <div className="md:pt-20 pt-5 flex flex-col w-full max-w-7xl mx-auto gap-4">
-      
       <div className="flex flex-col lg:flex-row w-full">
-        
         <aside className="scrollbar-none w-full lg:w-[50%] h-auto lg:h-screen overflow-y-auto lg:overflow-x-hidden overflow-x-auto flex flex-row lg:flex-col gap-2 p-2 snap-x snap-mandatory">
           {currentProduct.images.map((imgUrl, idx) => {
             return (
@@ -80,9 +85,13 @@ const ProductPage = () => {
               {currentProduct.subCategory}
             </p>
             <div className="flex items-center justify-between">
-              <p className="font-bold font-body text-lg">
-                Rs. {currentProduct.price.toLocaleString()}
+              <p className="font-bold flex flex-col font-body text-lg">
+                {formatPrice(currentProduct?.finalPrice)}
+                <span className="font-semibold font-body text-gray-500 text-sm line-through">
+                  {formatPrice(currentProduct.price)}
+                </span>
               </p>
+
               <div className="flex font-semibold font-body justify-between gap-1 items-center">
                 <Image className="w-4" src={Star} alt="Star" />
                 <p className="pt-[1px]">{review?.averageRating || 0}</p>
@@ -121,7 +130,10 @@ const ProductPage = () => {
 
           <div className="w-full pt-6">
             <p className="font-body font-bold mb-3 text-gray-800 tracking-wide uppercase">
-              Select Color: <span className="text-gray-500 font-normal capitalize">{selectedColor}</span>
+              Select Color:{" "}
+              <span className="text-gray-500 font-normal capitalize">
+                {selectedColor}
+              </span>
             </p>
             <div className="flex flex-wrap gap-3">
               {currentProduct.colors.map((color) => (
@@ -148,21 +160,33 @@ const ProductPage = () => {
             <button
               onClick={() => setCount(count > 1 ? count - 1 : count)}
               className={`${
-                count <= 1 ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:border-black"
+                count <= 1
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer hover:border-black"
               } group flex items-center justify-center w-10 h-10 border border-gray-300 rounded-full transition-colors duration-300`}
             >
-              <Minus size={16} className="text-gray-500 group-hover:text-black transition-colors" />
+              <Minus
+                size={16}
+                className="text-gray-500 group-hover:text-black transition-colors"
+              />
             </button>
             <span className="text-lg font-body font-medium text-black w-6 text-center">
               {count}
             </span>
             <button
-              onClick={() => setCount(count < currentProduct.stock ? count + 1 : count)}
+              onClick={() =>
+                setCount(count < currentProduct.stock ? count + 1 : count)
+              }
               className={`${
-                count >= currentProduct.stock ? "cursor-not-allowed opacity-50" : "cursor-pointer hover:border-black"
+                count >= currentProduct.stock
+                  ? "cursor-not-allowed opacity-50"
+                  : "cursor-pointer hover:border-black"
               } group flex items-center justify-center w-10 h-10 border border-gray-300 rounded-full transition-colors duration-300`}
             >
-              <Plus size={16} className="text-gray-500 group-hover:text-black transition-colors" />
+              <Plus
+                size={16}
+                className="text-gray-500 group-hover:text-black transition-colors"
+              />
             </button>
           </div>
 
@@ -189,9 +213,25 @@ const ProductPage = () => {
             >
               {loading ? (
                 <div className="flex items-center gap-2">
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                 </div>
               ) : (
@@ -217,12 +257,17 @@ const ProductPage = () => {
 
         {review?.reviews?.length === 0 ? (
           <div className="bg-gray-50 p-8 text-center border border-gray-100">
-            <p className="text-gray-500 text-lg">No reviews yet. Be the first to share your thoughts!</p>
+            <p className="text-gray-500 text-lg">
+              No reviews yet. Be the first to share your thoughts!
+            </p>
           </div>
         ) : (
           <div className="flex flex-col gap-6">
             {review?.reviews?.map((rev) => (
-              <div key={rev._id} className="flex flex-col gap-3 pb-6 border-b border-gray-100 last:border-0">
+              <div
+                key={rev._id}
+                className="flex flex-col gap-3 pb-6 border-b border-gray-100 last:border-0"
+              >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm uppercase">
@@ -237,7 +282,14 @@ const ProductPage = () => {
                   </div>
                   <div className="flex text-black">
                     {[...Array(5)].map((_, i) => (
-                      <span key={i} className={i < rev.rating ? "opacity-100" : "opacity-30"}>★</span>
+                      <span
+                        key={i}
+                        className={
+                          i < rev.rating ? "opacity-100" : "opacity-30"
+                        }
+                      >
+                        ★
+                      </span>
                     ))}
                   </div>
                 </div>

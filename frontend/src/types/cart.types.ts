@@ -14,10 +14,12 @@ export interface cartProduct {
   finalPrice: number;
   thumbnail: string;
   stock: number;
+  taxAmount: number;
+  discount: number;
 }
 
 export interface cartItems {
-  _id: string; // Cart item ki apni ID
+  _id: string;
   product: cartProduct;
   quantity: number;
   size: string;

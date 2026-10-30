@@ -16,7 +16,7 @@ const CartProvider = ({ children }: childrenType) => {
     try {
       setError(null);
       setLoading(true);
-      const result = await cartService.createCart(data); // Yahan ab direct Cart aayega
+      const result = await cartService.createCart(data); 
       setCart(result); 
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -31,7 +31,8 @@ const CartProvider = ({ children }: childrenType) => {
     try {
       setLoading(true);
       setError(null);
-      const result = await cartService.getCart(); // Yahan ab direct Cart aayega
+      const result = await cartService.getCart(); 
+      console.log(result)
       setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -47,7 +48,7 @@ const CartProvider = ({ children }: childrenType) => {
     try {
       setLoading(true);
       setError(null);
-      const result = await cartService.updateCart(data); // Yahan ab direct Cart aayega
+      const result = await cartService.updateCart(data); 
       setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {

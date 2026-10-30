@@ -1,11 +1,19 @@
 "use client";
+
 import React, { useEffect } from "react";
 import useCart from "@/src/hooks/useCart";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, ArrowRight, Minus, Plus } from "lucide-react";
+import { Trash2, ArrowRight, Minus, Plus, ShoppingBag } from "lucide-react";
 import Loading from "@/src/components/LandingComp/Loading";
 import Empty from "@/src/components/LandingComp/Empty";
+
+const formatPrice = (value: number) =>
+  new Intl.NumberFormat("en-PK", {
+    style: "currency",
+    currency: "PKR",
+    maximumFractionDigits: 0,
+  }).format(value);
 
 const CartPage = () => {
   const { cart, loading, getCart, updateCart, deleteProductInCart } = useCart();
@@ -16,169 +24,220 @@ const CartPage = () => {
 
   if (loading) return <Loading />;
 
-  // 1. Filter out items where product is null (Data error se bachne ke liye)
-  const validItems = cart?.items?.filter((item) => item.product !== null) || [];
-
+  const validItems =
+    cart?.items?.filter((item) => item.product && item.product !== null) || [];
   if (!cart || validItems.length === 0) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center">
-        <Empty />
-        <Link
-          href="/shop"
-          className="mt-6 bg-black text-white px-8 py-3 uppercase tracking-widest text-sm font-semibold hover:bg-gray-900 transition-colors"
-        >
-          Continue Shopping
-        </Link>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#f7f7f5] px-4">
+        <div className="flex flex-col items-center justify-center">
+          <Empty />
+          <Link
+            href="/shop"
+            className="mt-8 inline-flex items-center justify-center bg-black text-white px-8 py-3 text-[11px] md:text-xs font-medium uppercase tracking-[0.25em] transition-all duration-300 hover:bg-neutral-800"
+          >
+            Continue Shopping
+          </Link>
+        </div>
       </div>
     );
   }
 
-  // 2. Subtotal calculate karo (Kyunki backend se totalPrice nahi aa raha)
+  const taxAmount =  validItems.reduce(
+    (add, acc) => add + acc.product.taxAmount,
+    0,
+  );
+  const discount = validItems.reduce(
+    (add, acc) => add + acc.product.discount,
+    0,
+  );
+  const actualPrice = validItems.reduce(
+    (add, acc) => add + acc.product.finalPrice,
+    0,
+  );
   const subtotal = validItems.reduce((total, item) => {
-    return total + item.product.price * item.quantity;
+    return total + (item.product?.price || 0) * item.quantity;
   }, 0);
 
+  const itemCount = validItems.reduce(
+    (total, item) => total + item.quantity,
+    0,
+  );
+
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-20 mt-10 md:mt-0">
-      <h1 className="text-3xl md:text-4xl font-heading font-semibold mb-8 tracking-wide">
-        Shopping Bag
-      </h1>
+    <div className="min-h-screen  text-black">
+      <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-16 lg:py-20">
+        <div className="mb-8 flex items-end justify-between border-b border-black/10 pb-5">
+          <div>
+            <p className="mb-2 text-[10px] font-medium uppercase tracking-[0.35em] text-neutral-500">
+              Luxury Essentials
+            </p>
+            <h1 className="text-3xl font-medium tracking-[-0.04em] md:text-5xl">
+              Shopping Bag
+            </h1>
+          </div>
 
-      <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
-        {/* LEFT SIDE: Cart Items List */}
-        <div className="w-full lg:w-[60%] flex flex-col border-t border-gray-200">
-          {validItems.map((item, idx) => (
-            <div
-              key={idx}
-              className="flex gap-4 md:gap-6 py-6 border-b border-gray-200"
-            >
-              {/* Product Image */}
-              <Link
-                href={`/product/${item.product._id}`} // <-- _id use karo
-                className="relative w-24 h-32 md:w-32 md:h-40 bg-gray-50 shrink-0"
-              >
-                <Image
-                  src={item.product.thumbnail}
-                  alt={item.product.productName}
-                  fill
-                  className="object-cover"
-                />
-              </Link>
-
-              {/* Product Details */}
-              <div className="flex flex-col justify-between w-full">
-                <div>
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <h3 className="font-semibold text-sm md:text-base uppercase tracking-wide">
-                        {item.product.productName}
-                      </h3>
-                      <p className="text-gray-500 text-xs md:text-sm mt-1">
-                        Size: {item.size} | Color:{" "}
-                        <span className="capitalize">{item.color}</span>
-                      </p>
-                    </div>
-                    {/* Price */}
-                    <p className="font-semibold text-sm md:text-base">
-                      Rs. {(item.product.price * item.quantity).toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Bottom Row: Quantity & Remove */}
-                <div className="flex justify-between items-center mt-4">
-                  {/* Quantity Selector */}
-                  <div className="flex items-center border border-gray-300">
-                    <button
-                      onClick={() =>
-                        updateCart({
-                          quantity: item.quantity - 1,
-                          product: item.product._id, // <-- Sirf _id bhejo
-                          color: item.color,
-                          size: item.size,
-                        })
-                      }
-                      disabled={item.quantity <= 1}
-                      className={`p-2 ${item.quantity <= 1 ? "text-gray-300" : "text-gray-500 hover:text-black"}`}
-                    >
-                      <Minus size={14} />
-                    </button>
-                    <span className="px-3 text-sm font-medium">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() =>
-                        updateCart({
-                          quantity: item.quantity + 1,
-                          product: item.product._id, // <-- Sirf _id bhejo
-                          color: item.color,
-                          size: item.size,
-                        })
-                      }
-                      disabled={item.quantity >= item.product.stock}
-                      className={`p-2 ${item.quantity >= item.product.stock ? "text-gray-300" : "text-gray-500 hover:text-black"}`}
-                    >
-                      <Plus size={14} />
-                    </button>
-                  </div>
-
-                  {/* Remove Button */}
-                  <button
-                    onClick={() => deleteProductInCart(item.product._id)} // <-- _id bhejo
-                    className="text-gray-400 hover:text-red-500 transition-colors flex items-center gap-1 text-xs uppercase"
-                  >
-                    <Trash2 size={16} />
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+          <div className="flex items-center gap-3 text-sm text-neutral-600">
+            <ShoppingBag size={16} />
+            <span>
+              {itemCount} item{itemCount > 1 ? "s" : ""}
+            </span>
+          </div>
         </div>
 
-        {/* RIGHT SIDE: Order Summary */}
-        <div className="w-full lg:w-[40%]">
-          <div className="bg-gray-50 p-6 md:p-8 sticky top-24">
-            <h2 className="text-xl font-semibold uppercase tracking-wide mb-6">
-              Order Summary
-            </h2>
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-start">
+          <div className="w-full lg:w-[62%]">
+            <div className="space-y-4">
+              {validItems.map((item) => (
+                <article
+                  key={`${item.product?._id}-${item.size}-${item.color}`}
+                  className="group overflow-hidden border border-black/10 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.02)] transition-all duration-300 hover:shadow-[0_12px_30px_rgba(0,0,0,0.05)]"
+                >
+                  <div className=" gap-5  p-4 flex flex-row md:p-6">
+                    <Link
+                      href={`/product/${item.product?._id}`}
+                      className="relative block md:h-52 w-full overflow-hidden aspect-[4/5] bg-[#f2f2f0] md:h-60 md:w-52"
+                    >
+                      <Image
+                        src={item.product.thumbnail}
+                        alt={item.product.productName}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      />
+                    </Link>
 
-            <div className="flex flex-col gap-4 text-sm text-gray-600 border-b border-gray-200 pb-6 mb-6">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span className="font-medium text-black">
-                  Rs. {subtotal.toLocaleString()} {/* Subtotal calculated */}
+                    <div className="flex w-full flex-col justify-between">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <p className="mb-2 text-[10px] uppercase tracking-[0.25em] text-neutral-500">
+                            Signature
+                          </p>
+                          <Link
+                            href={`/product/${item.product?._id}`}
+                            className="block text-lg font-medium tracking-[0.02em] transition-colors hover:text-neutral-600"
+                          >
+                            {item.product.productName}
+                          </Link>
+
+                          <p className="mt-2 text-sm text-neutral-600">
+                            Size: {item.size} | Color:{" "}
+                            <span className="capitalize">{item.color}</span>
+                          </p>
+                        </div>
+
+                        <p className="whitespace-nowrap text-base font-medium md:text-lg">
+                          {formatPrice(item.product.finalPrice)}
+                        </p>
+                      </div>
+
+                      <div className="mt-6 flex items-center justify-between gap-4 border-t border-black/10 pt-4">
+                        <div className="inline-flex items-center border border-black/15 ">
+                          <button
+                            onClick={() =>
+                              updateCart({
+                                quantity: item.quantity - 1,
+                                product: item.product._id,
+                                color: item.color,
+                                size: item.size,
+                              })
+                            }
+                            disabled={item.quantity <= 1}
+                            className={`flex h-10 w-10 items-center justify-center transition-colors ${
+                              item.quantity <= 1
+                                ? "cursor-not-allowed text-neutral-300"
+                                : "text-neutral-700 hover:bg-black hover:text-white"
+                            }`}
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus size={14} />
+                          </button>
+
+                          <span className="min-w-[48px] text-center text-sm font-medium">
+                            {item.quantity}
+                          </span>
+
+                          <button
+                            onClick={() =>
+                              updateCart({
+                                quantity: item.quantity + 1,
+                                product: item.product._id,
+                                color: item.color,
+                                size: item.size,
+                              })
+                            }
+                            disabled={item.quantity >= item.product.stock}
+                            className={`flex h-10 w-10 items-center justify-center transition-colors ${
+                              item.quantity >= item.product.stock
+                                ? "cursor-not-allowed text-neutral-300"
+                                : "text-neutral-700 hover:bg-black hover:text-white"
+                            }`}
+                            aria-label="Increase quantity"
+                          >
+                            <Plus size={14} />
+                          </button>
+                        </div>
+
+                        <button
+                          onClick={() => deleteProductInCart(item.product._id)}
+                          className="inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-500 transition-colors hover:text-red-500"
+                        >
+                          <Trash2 size={15} />
+                          Remove
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+
+          <aside className="w-full lg:w-[38%]">
+            <div className="sticky top-8 border border-black/10 p-6 shadow-[0_20px_40px_rgba(0,0,0,0.03)] md:p-8">
+              <p className="mb-6 text-[10px] font-medium uppercase tracking-[0.35em] text-neutral-500">
+                Order Summary
+              </p>
+
+              <div className="space-y-4 border-b border-black/10 pb-6 text-sm text-neutral-600">
+                <div className="flex items-center justify-between">
+                  <span>Price</span>
+                  <span className="font-medium text-black">{formatPrice(subtotal)}</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span>Discount</span>
+                  <span>{discount}%</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span>Tax</span>
+                  <span>{taxAmount}%</span>
+                </div>
+              </div>
+
+              <div className="mt-6 flex items-center justify-between">
+                <span className="text-base font-medium uppercase tracking-[0.12em]">
+                  Total
+                </span>
+                <span className="text-2xl font-semibold tracking-[-0.04em]">
+                  {formatPrice(actualPrice)}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span>Shipping</span>
-                <span>Calculated at checkout</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Tax</span>
-                <span>Calculated at checkout</span>
+
+              <Link
+                href="/checkout"
+                className="mt-8 inline-flex w-full items-center justify-center gap-3 bg-black px-5 py-4 text-[11px] font-medium uppercase tracking-[0.28em] text-white transition-all duration-300 hover:bg-neutral-800"
+              >
+                Proceed to Checkout
+                <ArrowRight size={16} />
+              </Link>
+
+              <div className="mt-6 border-t border-black/10 pt-5 text-center">
+                <p className="text-[10px] uppercase tracking-[0.25em] text-neutral-500">
+                  Cash on Delivery Available
+                </p>
               </div>
             </div>
-
-            <div className="flex justify-between items-center mb-6">
-              <span className="font-semibold uppercase">Total</span>
-              <span className="font-bold text-xl">
-                Rs. {subtotal.toLocaleString()} {/* Total mein bhi subtotal use karo */}
-              </span>
-            </div>
-
-            <Link
-              href="/checkout"
-              className="w-full bg-black text-white py-4 flex items-center justify-center gap-2 uppercase tracking-widest text-sm font-semibold hover:bg-gray-900 transition-colors"
-            >
-              Proceed to Checkout
-              <ArrowRight size={18} />
-            </Link>
-
-            <p className="text-center text-xs text-gray-500 mt-4">
-              Cash on Delivery Available
-            </p>
-          </div>
+          </aside>
         </div>
       </div>
     </div>

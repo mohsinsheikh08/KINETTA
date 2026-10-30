@@ -6,12 +6,19 @@ import Image from "next/image";
 import useProduct from "@/src/hooks/useProduct";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import useCart from "@/src/hooks/useCart";
 
 const DekstopNavbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const { setIsOpen, setIsWomenOpen } = useProduct();
+  const { cart, getCart } = useCart();
   const pathname = usePathname();
+  useEffect(() => {
+    getCart();
+  }, []);
 
+  const totalProducts = cart?.items.length;
+  console.log(totalProducts);
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
@@ -56,7 +63,7 @@ const DekstopNavbar = () => {
               <span
                 className={getLinkClass("/mens")}
                 onClick={() => {
-                  setIsOpen(!setIsOpen); 
+                  setIsOpen(!setIsOpen);
                   setIsWomenOpen(false);
                 }}
               >
@@ -132,7 +139,13 @@ const DekstopNavbar = () => {
         <div className="flex items-center gap-4 sm:gap-5">
           <UserRound className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
           <Heart className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
-          <Handbag className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+          <Link href="/cart" className="relative">
+            {" "}
+            <Handbag className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+            <p className="absolute -top-[0.5px] rounded-full px-1 -left-1 font-body bg-black text-white text-xs">
+              {totalProducts}
+            </p>
+          </Link>
         </div>
       </nav>
     </div>

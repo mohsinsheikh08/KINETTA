@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { UserRound, Heart, Search, Handbag, Menu } from "lucide-react";
 import useProduct from "@/src/hooks/useProduct";
-
+import Link from "next/link";
 const Navbar = () => {
   const {isOpen,setIsOpen} = useProduct();
   return (
@@ -24,7 +24,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between gap-5">
           <UserRound size={20} />
           <Heart size={20} />
-          <Handbag size={20} />
+         <Link href="/cart"> <Handbag size={20} /></Link>
         </div>
       </div>
     </div>

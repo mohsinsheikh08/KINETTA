@@ -84,7 +84,7 @@ const getCart = async (req: AuthReports, res: Response) => {
       .findOne({ user: userId })
       .populate(
         "items.product",
-        "productName price thumbnail finalPrice stock",
+        "productName price thumbnail finalPrice stock taxAmount discount",
       );
 
     return res.status(200).json({
