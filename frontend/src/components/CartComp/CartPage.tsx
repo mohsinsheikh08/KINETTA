@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Trash2, ArrowRight, Minus, Plus, ShoppingBag } from "lucide-react";
 import Empty from "@/src/components/LandingComp/Empty";
+import LoadingSpinner from "../LandingComp/LoadingSpinner";
 
 const formatPrice = (value: number) =>
   new Intl.NumberFormat("en-PK", {
@@ -13,12 +14,15 @@ const formatPrice = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value || 0);
 const CartPageComp = () => {
-  const { cart, getCart, updateCart, deleteProductInCart } = useCart();
+  const { cart, loadingSpinner, getCart, updateCart, deleteProductInCart } = useCart();
 
   useEffect(() => {
     getCart();
   }, []);
 
+  if (loadingSpinner) {
+    return <LoadingSpinner />;
+  }
   const validItems =
     cart?.items?.filter((item) => item.product && item.product !== null) || [];
 

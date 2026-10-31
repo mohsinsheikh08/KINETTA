@@ -16,7 +16,7 @@ const CartProvider = ({ children }: childrenType) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [cart, setCart] = useState<Cart | null>(null);
-
+  const [loadingSpinner, setloadingSpinner] = useState(false);
   const createCart = async (data: createCart) => {
     try {
       setError(null);
@@ -58,7 +58,7 @@ const CartProvider = ({ children }: childrenType) => {
 
   const updateCart = async (data: updateCart) => {
     try {
-      setLoading(true);
+      setloadingSpinner(true);
       setError(null);
       const result = await cartService.updateCart(data);
       setCart(result);
@@ -67,7 +67,7 @@ const CartProvider = ({ children }: childrenType) => {
         setError("Cart update failed!");
       }
     } finally {
-      setLoading(false);
+      setloadingSpinner(false);
     }
   };
 
@@ -117,6 +117,7 @@ const CartProvider = ({ children }: childrenType) => {
     updateCart,
     deleteProductInCart,
     clearCart,
+    loadingSpinner
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

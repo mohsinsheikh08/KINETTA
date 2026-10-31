@@ -49,5 +49,6 @@ export interface cartStructure {
   clearCart: () => Promise<void>;
   updateCart: (data: updateCart) => Promise<void>;
   deleteProductInCart: (id: string) => Promise<void>;
-  cart: Cart | null; // Yahan Cart object aayega, response nahi
+  cart: Cart | null; 
+  loadingSpinner : boolean
 }
