@@ -5,7 +5,6 @@ import useCart from "@/src/hooks/useCart";
 import Image from "next/image";
 import Link from "next/link";
 import { Trash2, ArrowRight, Minus, Plus, ShoppingBag } from "lucide-react";
-import Loading from "@/src/components/LandingComp/Loading";
 import Empty from "@/src/components/LandingComp/Empty";
 
 const formatPrice = (value: number) =>
@@ -13,19 +12,18 @@ const formatPrice = (value: number) =>
     style: "currency",
     currency: "PKR",
     maximumFractionDigits: 0,
-  }).format(value);
+  }).format(value || 0);
 
 const CartPage = () => {
-  const { cart, loading, getCart, updateCart, deleteProductInCart } = useCart();
+  const { cart, getCart, updateCart, deleteProductInCart } = useCart();
 
   useEffect(() => {
     getCart();
   }, []);
 
-  if (loading) return <Loading />;
-
   const validItems =
     cart?.items?.filter((item) => item.product && item.product !== null) || [];
+
   if (!cart || validItems.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#f7f7f5] px-4">
@@ -42,21 +40,30 @@ const CartPage = () => {
     );
   }
 
-  const taxAmount =  validItems.reduce(
-    (add, acc) => add + acc.product.taxAmount,
-    0,
-  );
-  const discount = validItems.reduce(
-    (add, acc) => add + acc.product.discount,
-    0,
-  );
-  const actualPrice = validItems.reduce(
-    (add, acc) => add + acc.product.finalPrice,
-    0,
-  );
   const subtotal = validItems.reduce((total, item) => {
-    return total + (item.product?.price || 0) * item.quantity;
+    const price = Number(item.product?.price);
+    const safePrice = isNaN(price) ? 0 : price;
+    return total + safePrice * item.quantity;
   }, 0);
+  const actualPrice = validItems.reduce((total, item) => {
+    const finalPrice = Number(item.product?.finalPrice);
+    const safeFinalPrice = isNaN(finalPrice) ? 0 : finalPrice;
+    return total + safeFinalPrice * item.quantity;
+  }, 0);
+
+  const totalDiscount = validItems.reduce((total, item) => {
+    const originalPrice = Number(item.product?.price) || 0;
+    const discountedPrice = Number(item.product?.finalPrice) || 0;
+
+    // Agar discounted price original se kam hai tabhi discount calculate karo
+    const itemDiscount =
+      originalPrice > discountedPrice ? originalPrice - discountedPrice : 0;
+
+    return total + itemDiscount * item.quantity;
+  }, 0);
+
+  const avgDiscountPercent =
+    subtotal > 0 ? Math.round((totalDiscount / subtotal) * 100) : 0;
 
   const itemCount = validItems.reduce(
     (total, item) => total + item.quantity,
@@ -64,7 +71,7 @@ const CartPage = () => {
   );
 
   return (
-    <div className="min-h-screen  text-black">
+    <div className="min-h-screen text-black">
       <div className="mx-auto max-w-7xl px-4 py-10 md:px-8 md:py-16 lg:py-20">
         <div className="mb-8 flex items-end justify-between border-b border-black/10 pb-5">
           <div>
@@ -75,7 +82,6 @@ const CartPage = () => {
               Shopping Bag
             </h1>
           </div>
-
           <div className="flex items-center gap-3 text-sm text-neutral-600">
             <ShoppingBag size={16} />
             <span>
@@ -92,7 +98,7 @@ const CartPage = () => {
                   key={`${item.product?._id}-${item.size}-${item.color}`}
                   className="group overflow-hidden border border-black/10 bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.02)] transition-all duration-300 hover:shadow-[0_12px_30px_rgba(0,0,0,0.05)]"
                 >
-                  <div className=" gap-5  p-4 flex flex-row md:p-6">
+                  <div className="gap-5 p-4 flex flex-row md:p-6">
                     <Link
                       href={`/product/${item.product?._id}`}
                       className="relative block md:h-52 w-full overflow-hidden aspect-[4/5] bg-[#f2f2f0] md:h-60 md:w-52"
@@ -130,23 +136,22 @@ const CartPage = () => {
                       </div>
 
                       <div className="mt-6 flex items-center justify-between gap-4 border-t border-black/10 pt-4">
-                        <div className="inline-flex items-center border border-black/15 ">
+                        <div className="inline-flex items-center border border-black/15">
                           <button
-                            onClick={() =>
+                            onClick={() => {
                               updateCart({
                                 quantity: item.quantity - 1,
                                 product: item.product._id,
                                 color: item.color,
                                 size: item.size,
-                              })
-                            }
+                              });
+                            }}
                             disabled={item.quantity <= 1}
                             className={`flex h-10 w-10 items-center justify-center transition-colors ${
                               item.quantity <= 1
                                 ? "cursor-not-allowed text-neutral-300"
                                 : "text-neutral-700 hover:bg-black hover:text-white"
                             }`}
-                            aria-label="Decrease quantity"
                           >
                             <Minus size={14} />
                           </button>
@@ -156,29 +161,31 @@ const CartPage = () => {
                           </span>
 
                           <button
-                            onClick={() =>
+                            onClick={() => {
                               updateCart({
                                 quantity: item.quantity + 1,
                                 product: item.product._id,
                                 color: item.color,
                                 size: item.size,
-                              })
-                            }
+                              });
+                            }}
                             disabled={item.quantity >= item.product.stock}
                             className={`flex h-10 w-10 items-center justify-center transition-colors ${
                               item.quantity >= item.product.stock
                                 ? "cursor-not-allowed text-neutral-300"
                                 : "text-neutral-700 hover:bg-black hover:text-white"
                             }`}
-                            aria-label="Increase quantity"
                           >
                             <Plus size={14} />
                           </button>
                         </div>
 
                         <button
-                          onClick={() => deleteProductInCart(item.product._id)}
-                          className="inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-500 transition-colors hover:text-red-500"
+                          onClick={async () => {
+                            await deleteProductInCart(item._id);
+                            await getCart();
+                          }}
+                          className="inline-flex cursor-pointer items-center gap-2 text-[10px] font-medium uppercase tracking-[0.22em] text-neutral-500 transition-colors hover:text-red-500"
                         >
                           <Trash2 size={15} />
                           Remove
@@ -200,17 +207,21 @@ const CartPage = () => {
               <div className="space-y-4 border-b border-black/10 pb-6 text-sm text-neutral-600">
                 <div className="flex items-center justify-between">
                   <span>Price</span>
-                  <span className="font-medium text-black">{formatPrice(subtotal)}</span>
+                  <span className="font-medium text-black">
+                    {formatPrice(subtotal)}
+                  </span>
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <span>Discount</span>
-                  <span>{discount}%</span>
+                  <span>Discount ({avgDiscountPercent}%)</span>
+                  <span className="text-black font-semibold">
+                    - {formatPrice(totalDiscount)}
+                  </span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span>Tax</span>
-                  <span>{taxAmount}%</span>
+                  <span>Included</span>
                 </div>
               </div>
 

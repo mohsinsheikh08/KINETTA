@@ -1,7 +1,12 @@
 "use client";
 import { createContext, useState } from "react";
 import { childrenType } from "../types/common.types";
-import { Cart, createCart, updateCart, cartStructure } from "../types/cart.types";
+import {
+  Cart,
+  createCart,
+  updateCart,
+  cartStructure,
+} from "../types/cart.types";
 import cartService from "../services/cart.service";
 import axios from "axios";
 
@@ -16,8 +21,8 @@ const CartProvider = ({ children }: childrenType) => {
     try {
       setError(null);
       setLoading(true);
-      const result = await cartService.createCart(data); 
-      setCart(result); 
+      const result = await cartService.createCart(data);
+      setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {
         setError(err.response?.data?.message || "Add to cart failed!");
@@ -31,8 +36,15 @@ const CartProvider = ({ children }: childrenType) => {
     try {
       setLoading(true);
       setError(null);
-      const result = await cartService.getCart(); 
-      console.log(result)
+      const result = await cartService.getCart();
+      console.log(
+        "all products:",
+        JSON.stringify(
+          result?.items?.map((i) => i.product),
+          null,
+          2,
+        ),
+      );
       setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -48,7 +60,7 @@ const CartProvider = ({ children }: childrenType) => {
     try {
       setLoading(true);
       setError(null);
-      const result = await cartService.updateCart(data); 
+      const result = await cartService.updateCart(data);
       setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {

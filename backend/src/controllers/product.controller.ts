@@ -39,24 +39,27 @@ const createProduct = async (req: AuthReports, res: Response) => {
         message: "At least one image required!",
       });
     }
-    const {provider, urls} = await uploadSmart(files);
+    const { provider, urls } = await uploadSmart(files);
     const thumbnail = urls[0];
 
-    const priceNum = Number(price);
+    const priceNum = Number(price) || 0;
     const discountNum = Number(discount) || 0;
     const taxNum = Number(taxAmount) || 0;
-    const stockNum = Number(stock);
+    const stockNum = Number(stock) || 0;
+
+    const discountValue = priceNum * (discountNum / 100);
+    const taxValue = priceNum * (taxNum / 100);
+
+    const final = priceNum - discountValue + taxValue;
+    const finalProductPrice = Math.round(final * 100) / 100;
+
     const sizesArray = sizes
       .split(",")
       .map((size: string) => size.trim().toUpperCase());
     const colorsArray = colors
       .split(",")
       .map((color: string) => color.trim().toLowerCase());
-    console.log(colorsArray, sizesArray);
-    const discountValue = price * (discount / 100);
-    const taxValue = price * (taxAmount / 100);
-    const final = price - discountValue + taxValue;
-    const finalProductPrice = Math.round(final * 100) / 100;
+
     const product = await productModel.create({
       productName,
       productDescription,
@@ -68,13 +71,14 @@ const createProduct = async (req: AuthReports, res: Response) => {
       thumbnail: thumbnail,
       price: priceNum,
       stock: stockNum,
-      taxAmount: taxNum || 0,
-      discount: discountNum || 0,
-      finalPrice: finalProductPrice,
+      taxAmount: taxNum,
+      discount: discountNum,
+      finalPrice: finalProductPrice, 
       createdBy: userId,
       isActive,
       isFeatured,
     });
+
     return res
       .status(201)
       .json({ message: "Product created successfully", product });

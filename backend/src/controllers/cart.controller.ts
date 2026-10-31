@@ -114,10 +114,8 @@ const updateCart = async (req: AuthReports, res: Response) => {
         message: "user is not available!",
       });
     }
-
-    console.log(userId);
+    
     const cart = await cartModel.findOne({ user: userId });
-    console.log(cart);
     if (!cart) {
       return res.status(400).json({
         message: "cart is not avilable!",
@@ -149,7 +147,7 @@ const updateCart = async (req: AuthReports, res: Response) => {
 
     await cart.populate(
       "items.product",
-      "finalPrice thumbnail stock productName",
+      "productName price finalPrice thumbnail stock",
     );
     return res.status(200).json({
       message: "code updated successfully!",
