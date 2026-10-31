@@ -6,7 +6,6 @@ import CartProvider from "../context/CartProvider";
 import OrderProvider from "../context/OrderProvider";
 import ReviewProvider from "../context/ReviewProvider";
 import WishlistProvider from "../context/WishlistProvider";
-
 import { Montserrat, Roboto } from "next/font/google";
 
 const montserrat = Montserrat({
@@ -24,6 +23,9 @@ const roboto = Roboto({
 export const metadata: Metadata = {
   title: "KINETTA — Premium Gym Wear",
   description: "Premium gym wear for those who train with purpose. Built for movement. Designed for performance.",
+  icons: {
+    icon: '/kinetta.png'
+  }
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
