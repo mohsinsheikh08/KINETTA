@@ -1,9 +1,11 @@
-import React from 'react'
+import OrderInfoPage from "@/src/components/OrderComp/OrderInfoPage";
 
 const CheckoutPage = () => {
   return (
-    <div>CheckoutPage</div>
-  )
-}
+    <div className="min-h-screen text-black bg-[#f7f7f5] overflow-x-hidden">
+      <OrderInfoPage />
+    </div>
+  );
+};
 
-export default CheckoutPage
+export default CheckoutPage;
