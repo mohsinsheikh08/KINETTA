@@ -7,9 +7,25 @@ import Image from "next/image";
 import Loading from "../LandingComp/ProductLoading";
 import { Heart } from "lucide-react";
 import Link from "next/link";
+import useWishlist from "@/src/hooks/useWishlist";
+import BlackHeart from "@/public/like.png";
 const ProductGrid = ({ heading }: categoryType) => {
   const [Products, setProducts] = useState<Product[]>([]);
   const { getAllProducts, loading } = useProduct();
+  const { getWishlist, removeProduct, addProduct, wishlist } = useWishlist();
+
+  const wishlistArray = Array.isArray(wishlist)
+    ? wishlist
+    : wishlist?.wishlist && Array.isArray(wishlist.wishlist)
+      ? wishlist.wishlist
+      : [];
+
+  const wishlistIds = new Set<string>(
+    wishlistArray.map((item) => {
+      const product = item.product;
+      return typeof product === "string" ? product : product._id;
+    }),
+  );
 
   useEffect(() => {
     const handleProducts = async () => {
@@ -18,6 +34,11 @@ const ProductGrid = ({ heading }: categoryType) => {
     };
     handleProducts();
   }, []);
+  useEffect(() => {
+    getWishlist();
+    console.log(wishlistIds, "wishlistIds");
+  }, []);
+
   return (
     <div className="flex flex-col gap-12 pb-20 md:pb-10">
       <h1 className="font-heading md:pt-20 pt-5 md:pl-10 pl-4 font-semibold  text-3xl sm:text-4xl leading-15 md:text-6xl lg:7xl">
@@ -26,6 +47,8 @@ const ProductGrid = ({ heading }: categoryType) => {
       {!loading ? (
         <div className="w-full grid grid-cols-1  min-[400px]:grid-cols-2 md:grid-cols-3 min-[400px]:gap-2 p-4">
           {Products.map((product) => {
+            const isProductInWishlist = wishlistIds.has(product._id);
+            console.log(isProductInWishlist);
             return (
               <div key={product._id} className="h-140 pb-10">
                 <div className="">
@@ -74,20 +97,36 @@ const ProductGrid = ({ heading }: categoryType) => {
                     </div>
                   </Link>
                   <div className="w-full mt-3 flex flex-col gap-3 px-1">
-
-
                     <div className="flex justify-between items-start gap-2">
-
                       <p className="text-[13px] md:text-[16px] font-medium text-gray-900 tracking-wide truncate">
                         {product.productName}
                       </p>
 
-
-                      <button className="text-gray-400 hover:text-black transition-colors duration-300">
-                        <Heart size={18} strokeWidth={1.5} />
+                      <button
+                        onClick={() =>
+                          isProductInWishlist
+                            ? removeProduct(product._id)
+                            : addProduct(product._id)
+                        }
+                        aria-label={
+                          isProductInWishlist
+                            ? "Remove from wishlist"
+                            : "Add to wishlist"
+                        }
+                        className="shrink-0 text-gray-400 hover:text-black transition-colors duration-300"
+                      >
+                        {isProductInWishlist ? (
+                          <Image
+                            src={BlackHeart}
+                            alt="Saved"
+                            width={18}
+                            height={18}
+                          />
+                        ) : (
+                          <Heart size={18} strokeWidth={1.5} />
+                        )}
                       </button>
                     </div>
-
 
                     <div className="flex items-center">
                       <p className="text-[13px] md:text-sm font-semibold text-gray-900 whitespace-nowrap">

@@ -32,4 +32,5 @@ export interface WishlistStructure {
   removeProduct: (productId: string) => Promise<void>;
   clearWishlist: () => Promise<void>;
   productLoading: boolean;
+  heartLoading: boolean;
 }

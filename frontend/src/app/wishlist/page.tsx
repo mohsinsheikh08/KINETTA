@@ -5,10 +5,9 @@ import useWishlist from "@/src/hooks/useWishlist";
 import useCart from "@/src/hooks/useCart";
 import Image from "next/image";
 import Link from "next/link";
-import { Trash2, ShoppingBag, Heart, ArrowRight } from "lucide-react";
+import { Trash2, ShoppingBag, Heart } from "lucide-react";
 import Loading from "@/src/components/LandingComp/Loading";
-import Empty from "@/src/components/LandingComp/Empty";
-import ProductLoading from "@/src/components/LandingComp/ProductLoading";
+import LoadingSpinner from "@/src/components/LandingComp/LoadingSpinner";
 
 const formatPrice = (value: number) =>
   new Intl.NumberFormat("en-PK", {
@@ -35,7 +34,7 @@ const WishlistPage = () => {
 
   if (loading) return <Loading />;
 
-  if (productLoading) return <ProductLoading />;
+  if (productLoading) return <LoadingSpinner />;
 
   if (wishlistArray.length === 0) {
     return (

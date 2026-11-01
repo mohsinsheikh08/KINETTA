@@ -37,14 +37,6 @@ const CartProvider = ({ children }: childrenType) => {
       setLoading(true);
       setError(null);
       const result = await cartService.getCart();
-      console.log(
-        "all products:",
-        JSON.stringify(
-          result?.items?.map((i) => i.product),
-          null,
-          2,
-        ),
-      );
       setCart(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {

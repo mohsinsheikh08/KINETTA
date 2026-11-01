@@ -13,7 +13,8 @@ const WishlistProvider = ({ children }: childrenType) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
-  const [productLoading, setProductLoading] = useState(false);
+  const [productLoading, setProductLoading] = useState<boolean>(false);
+  const [heartLoading, setheartLoading] = useState<boolean>(false);
   const getWishlist = async () => {
     try {
       setLoading(true);
@@ -32,11 +33,11 @@ const WishlistProvider = ({ children }: childrenType) => {
     }
   };
 
-  // ============ ADD PRODUCT ============
   const addProduct = async (product: string) => {
     try {
       setLoading(true);
       setError(null);
+      setheartLoading(true);
       const result = await wishlistService.addProduct(product);
       setWishlist(result);
     } catch (err) {
@@ -46,14 +47,14 @@ const WishlistProvider = ({ children }: childrenType) => {
       setError("Product not added!");
     } finally {
       setLoading(false);
+      setheartLoading(false);
     }
   };
 
-  // ============ REMOVE PRODUCT ============
   const removeProduct = async (productId: string) => {
     try {
-      setLoading(true);
       setError(null);
+      setheartLoading(true);
       const result = await wishlistService.removeProduct(productId);
       setWishlist(result);
     } catch (err) {
@@ -63,10 +64,10 @@ const WishlistProvider = ({ children }: childrenType) => {
       setError("Product not removed!");
     } finally {
       setLoading(false);
+      setheartLoading(false);
     }
   };
 
-  // ============ CLEAR WISHLIST ============
   const clearWishlist = async () => {
     try {
       setLoading(true);
@@ -92,6 +93,7 @@ const WishlistProvider = ({ children }: childrenType) => {
     removeProduct,
     clearWishlist,
     productLoading,
+    heartLoading,
   };
 
   return (

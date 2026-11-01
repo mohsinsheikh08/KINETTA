@@ -18,7 +18,7 @@ const DekstopNavbar = () => {
   }, []);
 
   const totalProducts = cart?.items.length;
-  console.log(totalProducts);
+
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
@@ -116,11 +116,10 @@ const DekstopNavbar = () => {
               </span>
             </Link>
           </li>
-
-          {/* SEARCH ICON */}
+          {/* 
           <li>
             <Search className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
-          </li>
+          </li> */}
         </ul>
 
         {/* LOGO */}

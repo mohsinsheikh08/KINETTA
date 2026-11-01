@@ -7,17 +7,34 @@ import Link from "next/link";
 import Loading from "../LandingComp/ProductLoading";
 import { Heart } from "lucide-react";
 import { categoryType } from "@/src/types/common.types";
+import useWishlist from "@/src/hooks/useWishlist";
+import BlackHeart from "@/public/like.png";
 const ProductGrid = ({ category, heading }: categoryType) => {
   const [Products, setProducts] = useState<Product[]>([]);
   const { getAllProducts, loading } = useProduct();
-
+  const { addProduct, removeProduct, wishlist, getWishlist, productLoading } =
+    useWishlist();
   useEffect(() => {
     const handleProducts = async () => {
       const response: Product[] = await getAllProducts();
       setProducts(response);
     };
     handleProducts();
+    getWishlist();
   }, []);
+
+  const wishlistArray = Array.isArray(wishlist)
+    ? wishlist
+    : wishlist?.wishlist && Array.isArray(wishlist.wishlist)
+      ? wishlist.wishlist
+      : [];
+
+  const wishlistIds = new Set(
+    wishlistArray.map((item) => {
+      const product = item.product;
+      return typeof product === "string" ? product : product._id;
+    }),
+  );
   const Mens = Products.filter((product) => product.category === category);
 
   return (
@@ -28,6 +45,7 @@ const ProductGrid = ({ category, heading }: categoryType) => {
       {!loading ? (
         <div className="w-full  grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 gap-2 p-4">
           {Mens.map((product) => {
+            const isProductInWishlist = wishlistIds.has(product._id);
             return (
               <div key={product._id} className="h-140">
                 <Link href={`/product/${product._id}`}>
@@ -76,8 +94,6 @@ const ProductGrid = ({ category, heading }: categoryType) => {
                   </div>
                 </Link>
                 <div className="w-full mt-3 flex flex-col gap-3 px-1">
-                
-
                   {/* 2. Product Name and Heart Icon Section */}
                   <div className="flex justify-between items-start gap-2">
                     {/* Product Name */}
@@ -85,13 +101,35 @@ const ProductGrid = ({ category, heading }: categoryType) => {
                       {product.productName}
                     </p>
 
-                    {/* Heart Icon (Wishlist) */}
-                    <button className="text-gray-400 hover:text-black transition-colors duration-300">
-                      <Heart size={18} strokeWidth={1.5} />
-                    </button>
+                    {productLoading ? (
+                     <div className="animate-spin w-5 h-5 border-2 border-t-black/20 border-black rounded-full"></div>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          isProductInWishlist
+                            ? removeProduct(product._id)
+                            : addProduct(product._id)
+                        }
+                        aria-label={
+                          isProductInWishlist
+                            ? "Remove from wishlist"
+                            : "Add to wishlist"
+                        }
+                        className="shrink-0 text-gray-400 cursor-pointer hover:text-black transition-colors duration-300"
+                      >
+                        {isProductInWishlist ? (
+                          <Image
+                            src={BlackHeart}
+                            alt="Saved"
+                            width={18}
+                            height={18}
+                          />
+                        ) : (
+                          <Heart size={18} strokeWidth={1.5} />
+                        )}
+                      </button>
+                    )}
                   </div>
-
-                  {/* 3. Price Section (Next Line) */}
                   <div className="flex items-center">
                     <p className="text-[13px] md:text-sm font-semibold text-gray-900 whitespace-nowrap">
                       Rs. {product.price?.toLocaleString() || "0"}
