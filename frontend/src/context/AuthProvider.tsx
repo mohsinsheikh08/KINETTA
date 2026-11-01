@@ -15,10 +15,6 @@ const AuthProvider = ({ children }: childrenType) => {
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<null | User>(null);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   const Register = async (data: Register) => {
     try {
       setError(null);
@@ -86,7 +82,6 @@ const AuthProvider = ({ children }: childrenType) => {
 
   useEffect(() => {
     const getUser = async () => {
-      console.log(user)
       await getMe();
     };
     getUser();

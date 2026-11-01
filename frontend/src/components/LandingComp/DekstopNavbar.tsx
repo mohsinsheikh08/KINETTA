@@ -137,8 +137,14 @@ const DekstopNavbar = () => {
 
         {/* RIGHT ICONS */}
         <div className="flex items-center gap-4 sm:gap-5">
-          <UserRound className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
-          <Heart className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+          <Link href="/user">
+            {" "}
+            <UserRound className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+          </Link>
+          <Link href="/wishlist">
+            {" "}
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+          </Link>
           <Link href="/cart" className="relative">
             {" "}
             <Handbag className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />

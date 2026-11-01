@@ -1,4 +1,5 @@
-import { cartProduct, User } from "./cart.types";
+import { cartProduct } from "./cart.types";
+import { User } from "./auth.types";
 interface wishlistStructure {
   product: cartProduct;
   _id: string;
@@ -17,6 +18,11 @@ export interface Wishlist {
 }
 
 
+export interface WishlistContextType {
+  message: string;
+  wishlist: Wishlist;
+}
+
 export interface WishlistStructure {
   loading: boolean;
   error: string | null;
@@ -25,4 +31,5 @@ export interface WishlistStructure {
   addProduct: (product: string) => Promise<void>;
   removeProduct: (productId: string) => Promise<void>;
   clearWishlist: () => Promise<void>;
+  productLoading: boolean;
 }

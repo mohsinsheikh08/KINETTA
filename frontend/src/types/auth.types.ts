@@ -9,9 +9,13 @@ export interface Register extends Login {
 }
 
 export interface User extends Register {
-  message: string;
   _id: string;
   role: string;
+}
+
+export interface Authresponse {
+  message: string,
+  user: User
 }
 
 export interface AuthStructure {

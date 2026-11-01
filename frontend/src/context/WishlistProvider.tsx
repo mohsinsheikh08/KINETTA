@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { createContext, useState } from "react";
 import { childrenType } from "../types/common.types";
 import { Wishlist, WishlistStructure } from "../types/wishlist.types";
@@ -13,12 +13,12 @@ const WishlistProvider = ({ children }: childrenType) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [wishlist, setWishlist] = useState<Wishlist | null>(null);
-
-  // ============ GET WISHLIST ============
+  const [productLoading, setProductLoading] = useState(false);
   const getWishlist = async () => {
     try {
       setLoading(true);
       setError(null);
+      setProductLoading(true);
       const result = await wishlistService.getWishlist();
       setWishlist(result);
     } catch (err) {
@@ -28,6 +28,7 @@ const WishlistProvider = ({ children }: childrenType) => {
       setError("Wishlist not found!");
     } finally {
       setLoading(false);
+      setProductLoading(false);
     }
   };
 
@@ -90,6 +91,7 @@ const WishlistProvider = ({ children }: childrenType) => {
     addProduct,
     removeProduct,
     clearWishlist,
+    productLoading,
   };
 
   return (

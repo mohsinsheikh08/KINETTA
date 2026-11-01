@@ -8,7 +8,8 @@ import { Heart, Plus, Minus } from "lucide-react";
 import Star from "@/public/star.png";
 import Loading from "../LandingComp/Loading";
 import useCart from "@/src/hooks/useCart";
-
+import BlackHeart from "@/public/like.png";
+import useWishlist from "@/src/hooks/useWishlist";
 const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 
 const formatPrice = (value: number): string => {
@@ -19,14 +20,19 @@ const formatPrice = (value: number): string => {
   }).format(value);
 };
 const ProductPage = () => {
+  const { createCart, loading, error } = useCart();
+  const { currentProduct } = useProduct();
+  const { getProductReviews, review } = useReview();
+  const { addProduct, removeProduct, getWishlist, wishlist } = useWishlist();
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedColor, setSelectedColor] = useState("black");
   const params = useParams();
   const id = params.id as string;
-  const { createCart, loading, error } = useCart();
-  const { currentProduct } = useProduct();
-  const { getProductReviews, review } = useReview();
   const [count, setCount] = useState(1);
+
+  useEffect(() => {
+    getWishlist();
+  }, []);
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -37,6 +43,17 @@ const ProductPage = () => {
     }
   }, [id]);
 
+  const wishlistArray = Array.isArray(wishlist)
+    ? wishlist
+    : wishlist?.wishlist && Array.isArray(wishlist.wishlist)
+      ? wishlist.wishlist
+      : [];
+
+  const isWishlisted = wishlistArray.some((item) => {
+    const product = item?.product || item;
+    const productId = typeof product === "string" ? product : product?._id;
+    return productId === id;
+  });
   if (!currentProduct) {
     return <Loading />;
   }
@@ -238,8 +255,20 @@ const ProductPage = () => {
                 "Add to bag"
               )}
             </button>
-            <button className="h-14 w-[18%] flex justify-center items-center border border-gray-200 hover:border-black transition-colors">
-              <Heart />
+            <button
+              onClick={() =>
+                isWishlisted ? removeProduct(id) : addProduct(id)
+              }
+              aria-label={
+                isWishlisted ? "Remove from wishlist" : "Add to wishlist"
+              }
+              className="h-14 w-[18%] flex justify-center items-center border border-gray-200 hover:border-black transition-colors"
+            >
+              {isWishlisted ? (
+                <Image src={BlackHeart} alt="Saved" width={20} height={20} />
+              ) : (
+                <Heart />
+              )}
             </button>
           </div>
         </aside>

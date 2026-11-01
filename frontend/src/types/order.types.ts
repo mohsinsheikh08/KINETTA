@@ -1,4 +1,5 @@
-import { cartItems, User } from "./cart.types";
+import { cartItems } from "./cart.types";
+import { User } from "./auth.types";
 
 export interface CreateOrder {
   address: {
@@ -37,16 +38,15 @@ export interface Order extends CreateOrder {
   __v: number;
 }
 
-export type AllOrders = Order[]
-
+export type AllOrders = Order[];
 
 export interface OrderStructure {
-  loading: boolean,
-  error: null| string,
-  createOrder : (data: CreateOrder) => Promise<void>;
-  getOrder : () => Promise<void>;
-  allOrders : () => Promise<void>;
-  updateStatus : (id: string, status : updateOrder) => Promise<void>;
+  loading: boolean;
+  error: null | string;
+  createOrder: (data: CreateOrder) => Promise<void>;
+  getOrder: () => Promise<void>;
+  allOrders: () => Promise<void>;
+  updateStatus: (id: string, status: updateOrder) => Promise<void>;
   order: Order | null;
-  orders: Order[]
+  orders: Order[];
 }
