@@ -35,7 +35,7 @@ const DashboardPage = () => {
       title: "User Manager",
       description: "Manage customers, ban suspicious accounts.",
       icon: Users,
-      path: "/dashboard/users",
+      path: "/dashboard/user-manager",
       allowedRoles: ["super_admin", "user_manager"],
     },
   ];

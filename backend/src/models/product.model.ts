@@ -1,37 +1,61 @@
 import mongoose from "mongoose";
-
 const gymWearColors = [
-  // Basic
   "black",
   "white",
+  "off-white",
+  "ivory",
   "grey",
+  "light-grey",
+  "dark-grey",
   "charcoal",
   "slate",
+  "silver",
 
-  // Neutral / Earth
   "beige",
   "cream",
+  "sand",
   "brown",
+  "chocolate",
   "tan",
   "khaki",
+  "mocha",
+  "taupe",
+  "camel",
 
-  // Bold / Gym
   "red",
+  "crimson",
   "maroon",
+  "burgundy",
+  "wine",
+  "pink",
+  "hot-pink",
+  "blush",
+  "dusty-rose",
+  "coral",
+
   "navy",
   "blue",
-  "olive",
-  "green",
+  "royal-blue",
+  "sky-blue",
   "teal",
-  "purple",
-  "pink",
-
-  // Premium / Fashion
+  "turquoise",
+  "green",
+  "olive",
+  "emerald",
   "sage",
-  "mocha",
-  "dustyRose",
+  "mint",
+  "forest-green",
+
+  "yellow",
+  "mustard",
+  "gold",
+  "orange",
+  "peach",
+
+  "purple",
   "lavender",
-  "skyBlue",
+  "plum",
+  "violet",
 ];
 const productSchema = new mongoose.Schema(
   {

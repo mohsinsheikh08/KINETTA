@@ -32,7 +32,7 @@ const ProductManager = () => {
   console.log(productsArray.map((product) => product.stock));
 
   const filteredProducts = productsArray.filter((product) =>
-    product.productName.toLowerCase().includes(searchTerm.toLowerCase()),
+    product?.productName?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this product?")) {

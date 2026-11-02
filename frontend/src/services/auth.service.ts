@@ -28,7 +28,17 @@ const authService = {
     const response = await api.post<adminCheckResponse>("/auth/admin-check", {
       securityKey: data,
     });
-    return response.data.success  ;
+    return response.data.success;
+  },
+  getAllUsers: async (): Promise<User[]> => {
+    const response = await api.get<{ users: User[] }>("/auth/all-users");
+    return response.data.users;
+  },
+  deleteUser: async (id: string): Promise<string> => {
+    const response = await api.delete<{ message: string }>(
+      `/auth/delete-user/${id}`,
+    );
+    return response.data.message;
   },
 };
 

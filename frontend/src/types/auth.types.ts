@@ -10,18 +10,26 @@ export interface Register extends Login {
 
 export interface User extends Register {
   _id: string;
-  role: string;
+  role:
+    | "customer"
+    | "super_admin"
+    | "product_manager"
+    | "order_manager"
+    | "user_manager"
+    | string;
+  createdAt?: string;
+  updatedAt?: string;
+  __v?: number;
 }
 
 export interface Authresponse {
-  message: string,
-  user: User
+  message: string;
+  user: User;
 }
 
-
 export interface adminCheckResponse {
-  message?: string,
-  success: boolean
+  message?: string;
+  success: boolean;
 }
 
 export interface AuthStructure {
@@ -34,5 +42,8 @@ export interface AuthStructure {
   submitting: boolean;
   user: User | null;
   adminCheck: (data: string) => Promise<void>;
-  adminVerification: boolean | undefined
+  adminVerification: boolean | undefined;
+  getAllUsers: () => Promise<void>;
+  users: User[] | [];
+  deleteUser: (id: string) => Promise<void>;
 }

@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useState } from "react";
 import { AuthStructure, Login, Register, User } from "../types/auth.types";
 import { childrenType } from "../types/common.types";
 import authService from "../services/auth.service";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 
 export const AuthContext = createContext<AuthStructure | undefined>(undefined);
@@ -17,6 +17,8 @@ const AuthProvider = ({ children }: childrenType) => {
   const [adminVerification, setAdminVerification] = useState<
     boolean | undefined
   >(undefined);
+
+  const [users, setUsers] = useState<User[]>([]);
 
   const Register = async (data: Register) => {
     try {
@@ -100,6 +102,40 @@ const AuthProvider = ({ children }: childrenType) => {
     }
   };
 
+  const getAllUsers = async () => {
+    try {
+      setError(null);
+      setLoading(true);
+      const result = await authService.getAllUsers();
+      setUsers(result);
+    } catch (err) {
+      if (isAxiosError(err)) {
+        console.log(
+          err.response?.data?.message || "Product fetching are failed!",
+        );
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteUser = async (id: string) => {
+    try {
+      setLoading(true); 
+      setError(null);
+
+      await authService.deleteUser(id); 
+      setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || "Failed to delete user!");
+      } else {
+        setError("Something went wrong!");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
   useEffect(() => {
     const getUser = async () => {
       await getMe();
@@ -118,6 +154,9 @@ const AuthProvider = ({ children }: childrenType) => {
     adminCheck,
     user,
     adminVerification,
+    getAllUsers,
+    users,
+    deleteUser,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
