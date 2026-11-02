@@ -22,7 +22,7 @@ type validStatus =
   | "cancelled";
 
 export interface updateOrder {
-  status: validStatus;
+  status: string;
 }
 
 type paymentMethod = "COD";

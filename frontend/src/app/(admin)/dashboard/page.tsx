@@ -27,7 +27,7 @@ const DashboardPage = () => {
       title: "Order Manager",
       description: "Track sales, shipments, and customer orders.",
       icon: ShoppingBag,
-      path: "/dashboard/orders",
+      path: "/dashboard/order-manager",
       allowedRoles: ["super_admin", "order_manager"],
     },
     {
