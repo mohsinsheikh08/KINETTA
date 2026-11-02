@@ -16,7 +16,6 @@ const Landing = () => {
     const getProducts = async () => {
       const response: Product[] = await getAllProducts();
       setAllProducts(response);
-      console.log(response);
     };
     getProducts();
   }, []);

@@ -36,7 +36,6 @@ const ProductGrid = ({ heading }: categoryType) => {
   }, []);
   useEffect(() => {
     getWishlist();
-    console.log(wishlistIds, "wishlistIds");
   }, []);
 
   return (
@@ -48,7 +47,7 @@ const ProductGrid = ({ heading }: categoryType) => {
         <div className="w-full grid grid-cols-1  min-[400px]:grid-cols-2 md:grid-cols-3 min-[400px]:gap-2 p-4">
           {Products.map((product) => {
             const isProductInWishlist = wishlistIds.has(product._id);
-            console.log(isProductInWishlist);
+
             return (
               <div key={product._id} className="h-140 pb-10">
                 <div className="">

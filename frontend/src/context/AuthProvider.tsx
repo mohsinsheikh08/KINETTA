@@ -14,6 +14,9 @@ const AuthProvider = ({ children }: childrenType) => {
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<null | User>(null);
+  const [adminVerification, setAdminVerification] = useState<
+    boolean | undefined
+  >(undefined);
 
   const Register = async (data: Register) => {
     try {
@@ -80,6 +83,23 @@ const AuthProvider = ({ children }: childrenType) => {
     }
   };
 
+  const adminCheck = async (data: string) => {
+    try {
+      setError(null);
+      setLoading(true);
+      const result = await authService.adminCheck(data);
+      navigate.push("/admin-login");
+      setAdminVerification(result);
+    } catch (err) {
+      setError("Admin check failed!");
+      if (axios.isAxiosError(err)) {
+        console.log(err.response?.data?.message || "Admin check failed!");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const getUser = async () => {
       await getMe();
@@ -95,7 +115,9 @@ const AuthProvider = ({ children }: childrenType) => {
     Login,
     Logout,
     getMe,
+    adminCheck,
     user,
+    adminVerification,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

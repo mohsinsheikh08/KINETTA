@@ -226,4 +226,35 @@ const deleteUser = async (req: AuthReports, res: Response) => {
     });
   }
 };
-export { registerUser, loginUser, logoutUser, getMe, getAllUsers, deleteUser };
+
+const adminCheck = async (req: Request, res: Response) => {
+  const { securityKey } = req.body;
+  try {
+    if (!securityKey || securityKey.trim() === "") {
+      return res.status(400).json({ message: "Security key is required!" });
+    }
+    if (securityKey === process.env.ADMIN_SECURITY_KEY) {
+      return res
+        .status(200)
+        .json({ message: "Admin access granted!", sucess: true });
+    } else {
+      return res
+        .status(403)
+        .json({ message: "Admin access denied!", sucess: false });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      message: "Internal Server Error!",
+      error: err instanceof Error ? err.message : "Unknown Error!",
+    });
+  }
+};
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  getMe,
+  getAllUsers,
+  deleteUser,
+  adminCheck,
+};

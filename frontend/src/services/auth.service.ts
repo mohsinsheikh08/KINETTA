@@ -1,5 +1,11 @@
 import api from "../libs/api";
-import { Authresponse, Login, Register, User } from "../types/auth.types";
+import {
+  adminCheckResponse,
+  Authresponse,
+  Login,
+  Register,
+  User,
+} from "../types/auth.types";
 
 const authService = {
   register: async (data: Register): Promise<User> => {
@@ -17,6 +23,12 @@ const authService = {
   getMe: async (): Promise<User> => {
     const response = await api.get<Authresponse>("/auth/me");
     return response.data.user;
+  },
+  adminCheck: async (data: string): Promise<boolean> => {
+    const response = await api.post<adminCheckResponse>("/auth/admin-check", {
+      securityKey: data,
+    });
+    return response.data.success  ;
   },
 };
 

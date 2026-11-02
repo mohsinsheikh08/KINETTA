@@ -18,6 +18,12 @@ export interface Authresponse {
   user: User
 }
 
+
+export interface adminCheckResponse {
+  message?: string,
+  success: boolean
+}
+
 export interface AuthStructure {
   error: string | null;
   loading: boolean;
@@ -27,4 +33,6 @@ export interface AuthStructure {
   getMe: () => Promise<void>;
   submitting: boolean;
   user: User | null;
+  adminCheck: (data: string) => Promise<void>;
+  adminVerification: boolean | undefined
 }

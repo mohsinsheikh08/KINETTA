@@ -15,10 +15,6 @@ const ProductsGrid = ({
 }: ProductListType) => {
   const [isHovered, setIsHovered] = useState(false);
 
-  useEffect(() => {
-    console.log(backImage);
-  }, [backImage]);
-
   const { setIsOpen, setIsWomenOpen } = useProduct();
 
   return (

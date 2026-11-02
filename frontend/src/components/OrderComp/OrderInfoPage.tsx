@@ -78,7 +78,6 @@ const OrderInfoPage = () => {
     setIsSubmitting(true);
 
     try {
-      // 1. Backend ke format mein data tayyar karo
       const orderData = {
         items: validItems.map((item) => ({
           product: item.product._id,
@@ -271,9 +270,7 @@ const OrderInfoPage = () => {
             </div>
           </div>
 
-          {/* RIGHT: Order Summary */}
           <div className="w-full min-w-0 lg:w-[40%]">
-            {/* sticky only on desktop, otherwise it overlaps when stacked */}
             <div className="bg-white p-4 sm:p-6 lg:p-8 border border-black/10 shadow-sm lg:sticky lg:top-8">
               <h2 className="text-base sm:text-lg font-medium uppercase tracking-widest mb-4 sm:mb-6 border-b border-black/10 pb-4">
                 Your Order

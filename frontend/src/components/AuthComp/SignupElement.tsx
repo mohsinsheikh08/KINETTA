@@ -36,7 +36,7 @@ const SignupElement = () => {
           alt=""
         />
       </Link>
-      <p className="text-xl font-heading font-black uppercase">Kinetta Login</p>
+      <p className="text-xl font-heading font-black uppercase">Kinetta Signup</p>
       <p className="text-center min-w-70 max-w-80 font-body text-gray-600 font-[500] text-sm">
         Join the KINETTA community. Create an account to start building your
         ultimate training wardrobe.
