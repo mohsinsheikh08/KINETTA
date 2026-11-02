@@ -9,15 +9,29 @@ interface productInfo {
   colors: string[];
   images: string[];
   thumbnail: string;
-  price: number;
-  stock: number;
-  taxAmount: number;
-  discount: number;
+  price: string;
+  stock: string;
+  taxAmount: string;
+  discount: string;
   isActive: boolean;
   isFeatured: boolean;
 }
 
 export interface Product extends productInfo {
+  _id: string;
+  finalPrice: number;
+  createdBy: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+  id: string;
+}
+
+export interface updateProduct {
   _id: string;
   finalPrice: number;
   createdBy: {

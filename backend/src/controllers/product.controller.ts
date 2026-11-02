@@ -2,6 +2,7 @@ import { productModel } from "../models/product.model";
 import { Response } from "express";
 import { AuthReports } from "../types/types";
 import uploadSmart from "../utils/uploadSmart";
+import mongoose from "mongoose";
 import reviewModel from "../models/reviews.model";
 const createProduct = async (req: AuthReports, res: Response) => {
   try {
@@ -73,7 +74,7 @@ const createProduct = async (req: AuthReports, res: Response) => {
       stock: stockNum,
       taxAmount: taxNum,
       discount: discountNum,
-      finalPrice: finalProductPrice, 
+      finalPrice: finalProductPrice,
       createdBy: userId,
       isActive,
       isFeatured,
@@ -164,13 +165,50 @@ const deleteProduct = async (req: AuthReports, res: Response) => {
 const updateProduct = async (req: AuthReports, res: Response) => {
   try {
     const { id } = req.params;
-    if (!id) {
-      return res.status(404).json({
-        message: "Product is not available!",
-      });
-    }
+    const {
+      productName,
+      productDescription,
+      category,
+      subCategory,
+      price,
+      stock,
+      discount,
+      taxAmount,
+      sizes,
+      colors,
+    } = req.body;
+    const sizesArray = sizes
+      .split(",")
+      .map((size: string) => size.trim().toUpperCase());
+    const colorsArray = colors
+      .split(",")
+      .map((color: string) => color.trim().toLowerCase());
 
-    const product = await productModel.findByIdAndUpdate(id, req.body, {
+    const updateData = {
+      productName,
+      productDescription,
+      category,
+      subCategory,
+      price: Number(price),
+      stock: Number(stock),
+      discount: Number(discount),
+      taxAmount: Number(taxAmount),
+      sizes: sizesArray,
+      colors: colorsArray,
+    };
+    if (productName !== undefined) updateData.productName = productName;
+    if (productDescription !== undefined)
+      updateData.productDescription = productDescription;
+    if (category !== undefined) updateData.category = category;
+    if (subCategory !== undefined) updateData.subCategory = subCategory;
+    if (price !== undefined) updateData.price = Number(price);
+    if (stock !== undefined) updateData.stock = Number(stock);
+    if (discount !== undefined) updateData.discount = Number(discount);
+    if (taxAmount !== undefined) updateData.taxAmount = Number(taxAmount);
+    if (sizes !== undefined) updateData.sizes = sizesArray;
+    if (colors !== undefined) updateData.colors = colorsArray;
+
+    const product = await productModel.findByIdAndUpdate(id, updateData, {
       returnDocument: "after",
       runValidators: true,
     });

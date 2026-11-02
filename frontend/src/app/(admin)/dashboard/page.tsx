@@ -19,7 +19,7 @@ const DashboardPage = () => {
       title: "Product Manager",
       description: "Add, edit, and manage KINETTA's inventory.",
       icon: Package,
-      path: "/product-manager",
+      path: "/dashboard/product-manager",
       allowedRoles: ["super_admin", "product_manager"],
     },
     {

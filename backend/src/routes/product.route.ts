@@ -7,10 +7,11 @@ import {
 } from "../controllers/product.controller";
 import { tokenChecker, authorize } from "../middleware/auth.middleware";
 import express from "express";
-const router = express.Router();
 import multer from "multer";
 
+const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
+
 router.post(
   "/create-product",
   tokenChecker,
@@ -34,7 +35,8 @@ router.patch(
   "/:id",
   tokenChecker,
   authorize("super_admin", "product_manager"),
+  upload.array("images"),
   updateProduct,
 );
+
 export default router;
-  

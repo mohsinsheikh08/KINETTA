@@ -51,7 +51,7 @@ const productSchema = new mongoose.Schema(
     },
     subCategory: {
       type: String,
-      enum: ["Tops", "Bottoms", "Footwear", "Accessories"],
+      enum: ["Tops", "Shirts", "Bottoms", "Footwear", "Accessories"],
       required: true,
       default: "Tops",
     },

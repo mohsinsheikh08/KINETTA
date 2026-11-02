@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { Product, productStructure } from "../types/product.types";
 import { childrenType } from "../types/common.types";
 import productService from "../services/product.service";
@@ -52,7 +52,7 @@ const ProductProvider = ({ children }: childrenType) => {
     try {
       setLoading(true);
       setError(null);
-      console.log(id)
+      setCurrentProduct(null);
       const result = await productService.getProduct(id);
       setCurrentProduct(result);
     } catch (err) {
@@ -70,6 +70,7 @@ const ProductProvider = ({ children }: childrenType) => {
       setLoading(true);
       setError(null);
       const result = await productService.updateProduct(data, id);
+      console.log(result);
       setProducts((prev) =>
         prev.map((p) => (p._id === result._id ? result : p)),
       );
@@ -87,6 +88,7 @@ const ProductProvider = ({ children }: childrenType) => {
     try {
       setLoading(true);
       setError(null);
+
       await productService.deleteProduct(id);
       setProducts((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {
