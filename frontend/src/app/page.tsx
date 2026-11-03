@@ -33,23 +33,16 @@ const Landing = () => {
   );
 
   return (
-    // ✅ h-screen ki jagah min-h-screen (vertical scroll allowed)
-    // ✅ overflow-hidden ki jagah overflow-x-hidden (horizontal scroll band, vertical chalu)
-    // ✅ flex flex-col (footer neeche stick ho)
+
     <div className="w-full min-h-screen overflow-x-hidden flex flex-col bg-white">
-      {/* Mobile Sidebar */}
       <MobileSidebar />
 
-      {/* Navbar - mobile */}
       <Navbar />
 
-      {/* Navbar - desktop */}
       <DekstopNavbar />
 
       <main className="flex-1 w-full">
-        {/* ================= MEN'S SECTION ================= */}
         <section className="w-full flex flex-col items-center md:items-start">
-          {/* Mobile Video */}
           <div className="block md:hidden w-full">
             <Video
               posterSrc="https://ik.imagekit.io/mohsinsheikh08/kinetta/product/men_landing_page_image.jpg?updatedAt=1791542499393"
@@ -60,7 +53,6 @@ const Landing = () => {
             />
           </div>
 
-          {/* Desktop Video (ab desktop video URL use karein) */}
           <div className="hidden md:block w-full">
             <Video
               posterSrc="https://ik.imagekit.io/mohsinsheikh08/kinetta/product/men_landing_page_image.jpg?updatedAt=1791542499393"
@@ -71,13 +63,11 @@ const Landing = () => {
             />
           </div>
 
-          {/* Section Heading */}
           <h1 className="font-heading font-semibold text-2xl sm:text-4xl lg:text-5xl pt-7 px-4 sm:px-7">
             MEN&apos;S COLLECTION
           </h1>
 
-          {/* Products Grid - responsive padding & gap */}
-          <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 p-4 sm:p-7">
+          <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-6 p-4 sm:p-7">
             {mensSection.length > 0 ? (
               mensSection.map((men) => (
                 <ProductsGrid
@@ -97,19 +87,16 @@ const Landing = () => {
           </div>
         </section>
 
-        {/* ================= WOMEN'S VIDEO ================= */}
         <section className="w-full ">
           <WomenVideo />
         </section>
 
-        {/* ================= WOMEN'S SECTION ================= */}
         <section className="w-full flex flex-col items-center md:items-start">
           <h1 className="font-heading font-semibold text-2xl sm:text-4xl lg:text-5xl pt-7 px-4 sm:px-7">
             WOMEN&apos;S COLLECTION
           </h1>
 
-          {/* Women grid mein bhi same responsive padding (pehle missing tha) */}
-          <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6 p-4 sm:p-7">
+          <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-4 gap-10 sm:gap-6 p-4 sm:p-7">
             {womenSection.length > 0 ? (
               womenSection.map((women) => (
                 <ProductsGrid
@@ -130,7 +117,6 @@ const Landing = () => {
         </section>
       </main>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
