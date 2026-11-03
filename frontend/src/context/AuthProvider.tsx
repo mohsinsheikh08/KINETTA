@@ -26,7 +26,7 @@ const AuthProvider = ({ children }: childrenType) => {
       setSubmitting(true);
       const result = await authService.register(data);
       setUser(result);
-      localStorage.setItem("LoggedIn", "true");
+      console.log(result)
       navigate.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -42,7 +42,7 @@ const AuthProvider = ({ children }: childrenType) => {
       setSubmitting(true);
       const result = await authService.login(data);
       setUser(result);
-      localStorage.setItem("LoggedIn", "true");
+       console.log(result)
       navigate.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -58,8 +58,6 @@ const AuthProvider = ({ children }: childrenType) => {
       setLoading(true);
       setError(null);
       await authService.logout();
-
-      localStorage.removeItem("LoggedIn");
       setUser(null);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -74,10 +72,10 @@ const AuthProvider = ({ children }: childrenType) => {
       setError(null);
       const result = await authService.getMe();
       setUser(result);
+       console.log(result)
     } catch (err) {
       setUser(null);
       if (axios.isAxiosError(err) && err.response?.status === 401) {
-        localStorage.removeItem("LoggedIn");
       } else {
         setError("User not found!");
         if (axios.isAxiosError(err)) {
