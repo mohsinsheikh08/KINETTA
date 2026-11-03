@@ -7,6 +7,7 @@ import OrderProvider from "../context/OrderProvider";
 import ReviewProvider from "../context/ReviewProvider";
 import WishlistProvider from "../context/WishlistProvider";
 import { Montserrat, Roboto } from "next/font/google";
+import Motion from "../utils/Mtion";
 
 const montserrat = Montserrat({
   variable: "--font-heading",
@@ -22,10 +23,11 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "KINETTA — Premium Gym Wear",
-  description: "Premium gym wear for those who train with purpose. Built for movement. Designed for performance.",
+  description:
+    "Premium gym wear for those who train with purpose. Built for movement. Designed for performance.",
   icons: {
-    icon: '/kinetta.png'
-  }
+    icon: "/kinetta.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -40,7 +42,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <CartProvider>
               <OrderProvider>
                 <ReviewProvider>
-                  <WishlistProvider>{children}</WishlistProvider>
+                  <WishlistProvider>
+                    <Motion>{children}</Motion>
+                  </WishlistProvider>
                 </ReviewProvider>
               </OrderProvider>
             </CartProvider>

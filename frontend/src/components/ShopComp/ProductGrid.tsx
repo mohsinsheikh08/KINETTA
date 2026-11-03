@@ -10,8 +10,7 @@ import Link from "next/link";
 import useWishlist from "@/src/hooks/useWishlist";
 import BlackHeart from "@/public/like.png";
 const ProductGrid = ({ heading }: categoryType) => {
-  const [Products, setProducts] = useState<Product[]>([]);
-  const { getAllProducts, loading } = useProduct();
+  const { getAllProducts, loading, products } = useProduct();
   const { getWishlist, removeProduct, addProduct, wishlist } = useWishlist();
 
   const wishlistArray = Array.isArray(wishlist)
@@ -27,29 +26,24 @@ const ProductGrid = ({ heading }: categoryType) => {
     }),
   );
 
+  const ProductsArray = Array.isArray(products) ? products : [];
   useEffect(() => {
-    const handleProducts = async () => {
-      const response: Product[] = await getAllProducts();
-      setProducts(response);
-    };
-    handleProducts();
-  }, []);
-  useEffect(() => {
+    getAllProducts();
     getWishlist();
   }, []);
 
   return (
     <div className="flex flex-col gap-12 pb-20 md:pb-10">
-      <h1 className="font-heading md:pt-20 pt-5 md:pl-10 pl-4 font-semibold  text-3xl sm:text-4xl leading-15 md:text-6xl lg:7xl">
+      <h1 className="font-heading md:pt-20 pt-5  md:pl-10 pl-4 font-semibold  text-3xl sm:text-4xl leading-15 md:text-6xl lg:7xl">
         {heading}
       </h1>
       {!loading ? (
-        <div className="w-full grid grid-cols-1  min-[400px]:grid-cols-2 md:grid-cols-3 min-[400px]:gap-2 p-4">
-          {Products.map((product) => {
+        <div className="w-full  grid grid-cols-1 sm:grid-cols-2 gap-3 md:grid-cols-3 p-4">
+          {ProductsArray.map((product) => {
             const isProductInWishlist = wishlistIds.has(product._id);
 
             return (
-              <div key={product._id} className="h-140 pb-10">
+              <div key={product._id} className="pb-10">
                 <div className="">
                   <Link href={`/product/${product._id}`}>
                     <div className="relative w-full group aspect-[4/5] bg-gray-50 overflow-hidden group cursor-pointer">

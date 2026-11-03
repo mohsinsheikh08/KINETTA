@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { createContext, useState } from "react";
 import { childrenType } from "../types/common.types";
 import {
@@ -14,10 +14,11 @@ export const ReviewContext = createContext<ReviewStructure | undefined>(
 );
 
 const ReviewProvider = ({ children }: childrenType) => {
-  const [loading, setLoading] = useState(false);
+  const [loadingReview, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [review, setReview] = useState<getProductReviews | null>(null);
+  const [deleteReviewLoading, setdeleteReviewLoading] = useState(false)
 
   const addReview = async (data: addReview) => {
     try {
@@ -40,7 +41,7 @@ const ReviewProvider = ({ children }: childrenType) => {
       setLoading(true);
       setError(null);
       const result = await reviewService.getProductReviews(id);
-      console.log(result)
+      console.log(result);
       setReview(result);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -54,8 +55,8 @@ const ReviewProvider = ({ children }: childrenType) => {
 
   const deleteReview = async (id: string) => {
     try {
-      setLoading(true);
       setError(null);
+      setdeleteReviewLoading(true)
       await reviewService.deleterReview(id);
       setReviews((prev) => prev.filter((r) => r._id !== id));
     } catch (err) {
@@ -64,18 +65,19 @@ const ReviewProvider = ({ children }: childrenType) => {
         setError("Review not deleted!");
       }
     } finally {
-      setLoading(false);
+      setdeleteReviewLoading(false)
     }
   };
 
   const value: ReviewStructure = {
-    loading,
+    loadingReview,
     error,
     addReview,
     deleteReview,
     getProductReviews,
     review,
-    reviews
+    reviews,
+    deleteReviewLoading
   };
   return (
     <ReviewContext.Provider value={value}>{children}</ReviewContext.Provider>

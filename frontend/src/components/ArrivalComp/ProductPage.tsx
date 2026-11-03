@@ -25,18 +25,17 @@ const ProductPage = () => {
     const time = Math.floor(difference / oneDay);
     return time <= 7;
   });
-
   return (
     <div className="flex flex-col gap-12 pb-20 md:pb-10">
       <h1 className="font-heading md:pt-20 pt-5 md:pl-10 pl-4 font-semibold  text-3xl sm:text-4xl leading-15 md:text-6xl lg:7xl">
         Kinetta Arrivals
       </h1>
-      {loading ? (
+      {!loading ? (
         productsUpdate.length ? (
-          <div className="w-full grid grid-cols-1  min-[400px]:grid-cols-2 md:grid-cols-3 min-[400px]:gap-2 p-4">
+          <div className="w-full grid grid-cols-1  min-[400px]:grid-cols-2 md:grid-cols-3 gap-3 p-4">
             {productsUpdate.map((product) => {
               return (
-                <div key={product._id} className="h-140 pb-10">
+                <div key={product._id} className=" pb-10">
                   <div className="">
                     <Link href={`/product/${product._id}`}>
                       <div className="relative w-full group aspect-[4/5] bg-gray-50 overflow-hidden group cursor-pointer">
@@ -105,12 +104,11 @@ const ProductPage = () => {
             })}
           </div>
         ) : (
-          <ProductLoading />
+        <Empty />
         )
       ) : (
-        <div className="w-full h-screen  flex items-center ">
-          {" "}
-          <Empty />
+        <div>
+          <ProductLoading />
         </div>
       )}
     </div>

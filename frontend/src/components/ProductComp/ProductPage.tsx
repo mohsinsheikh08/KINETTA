@@ -4,14 +4,15 @@ import useProduct from "@/src/hooks/useProduct";
 import Image from "next/image";
 import useReview from "@/src/hooks/useReview";
 import { useParams } from "next/navigation";
-import { Heart, Plus, Minus } from "lucide-react";
-import Star from "@/public/star.png";
+import { Heart, Plus, Minus, Star, Trash } from "lucide-react";
+import StarIcon from "@/public/star.png";
 import Loading from "../LandingComp/Loading";
 import useCart from "@/src/hooks/useCart";
 import BlackHeart from "@/public/like.png";
 import useWishlist from "@/src/hooks/useWishlist";
-const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
+import useAuth from "@/src/hooks/useAuth";
 
+const sizes = ["XS", "S", "M", "L", "XL", "XXL", "3XL"];
 const formatPrice = (value: number): string => {
   return new Intl.NumberFormat("en-PK", {
     style: "currency",
@@ -19,19 +20,26 @@ const formatPrice = (value: number): string => {
     minimumFractionDigits: 0,
   }).format(value);
 };
+
 const ProductPage = () => {
   const { createCart, loading, error } = useCart();
   const { currentProduct } = useProduct();
-  const { getProductReviews, review } = useReview();
+  const { getMe, user } = useAuth();
+  const { getProductReviews, review, addReview, deleteReview, loadingReview } =
+    useReview();
   const { addProduct, removeProduct, getWishlist, wishlist } = useWishlist();
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedColor, setSelectedColor] = useState("black");
   const params = useParams();
   const id = params.id as string;
   const [count, setCount] = useState(1);
+  const [rating, setRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     getWishlist();
+    getMe();
   }, []);
 
   useEffect(() => {
@@ -54,6 +62,19 @@ const ProductPage = () => {
     const productId = typeof product === "string" ? product : product?._id;
     return productId === id;
   });
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!comment.trim()) return;
+    console.log("Submitting Review:", { productId: id, rating, comment });
+    setTimeout(async () => {
+      addReview({ product: id, rating: rating, comment: comment });
+      setComment("");
+      setRating(5);
+      await getProductReviews(id);
+    }, 1000);
+  };
+
   if (!currentProduct) {
     return <Loading />;
   }
@@ -105,12 +126,12 @@ const ProductPage = () => {
               <p className="font-bold flex flex-col font-body text-lg">
                 {formatPrice(currentProduct?.finalPrice)}
                 <span className="font-semibold font-body text-gray-500 text-sm line-through">
-                  {formatPrice(currentProduct.price)}
+                  {formatPrice(Number(currentProduct.price))}
                 </span>
               </p>
 
               <div className="flex font-semibold font-body justify-between gap-1 items-center">
-                <Image className="w-4" src={Star} alt="Star" />
+                <Image className="w-4" src={StarIcon} alt="Star" />
                 <p className="pt-[1px]">{review?.averageRating || 0}</p>
                 <p>({review?.count || 0})</p>
               </div>
@@ -192,10 +213,12 @@ const ProductPage = () => {
             </span>
             <button
               onClick={() =>
-                setCount(count < currentProduct.stock ? count + 1 : count)
+                setCount(
+                  count < Number(currentProduct.stock) ? count + 1 : count,
+                )
               }
               className={`${
-                count >= currentProduct.stock
+                count >= Number(currentProduct.stock)
                   ? "cursor-not-allowed opacity-50"
                   : "cursor-pointer hover:border-black"
               } group flex items-center justify-center w-10 h-10 border border-gray-300 rounded-full transition-colors duration-300`}
@@ -275,60 +298,156 @@ const ProductPage = () => {
       </div>
 
       <div className="w-full mx-auto p-5 md:p-10 border-t border-gray-200 mt-10">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="font-heading font-semibold text-2xl md:text-4xl uppercase tracking-wider">
-            Customer Reviews
-          </h2>
-          <span className="text-gray-500 text-sm font-medium">
-            ({review?.reviews?.length || 0} Reviews)
-          </span>
-        </div>
+        <div className="flex flex-col lg:flex-row gap-12">
+          <div className="w-full lg:w-[60%]">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="font-heading font-semibold text-2xl md:text-4xl uppercase tracking-wider">
+                Customer Reviews
+              </h2>
+              <span className="text-gray-500 text-sm font-medium">
+                ({review?.reviews?.length || 0} Reviews)
+              </span>
+            </div>
 
-        {review?.reviews?.length === 0 ? (
-          <div className="bg-gray-50 p-8 text-center border border-gray-100">
-            <p className="text-gray-500 text-lg">
-              No reviews yet. Be the first to share your thoughts!
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col gap-6">
-            {review?.reviews?.map((rev) => (
-              <div
-                key={rev._id}
-                className="flex flex-col gap-3 pb-6 border-b border-gray-100 last:border-0"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm uppercase">
-                      {rev.user?.firstName?.charAt(0) || "U"}
+            {review?.reviews?.length === 0 ? (
+              <div className="bg-gray-50 p-8 text-center border border-gray-100">
+                <p className="text-gray-500 text-lg">
+                  No reviews yet. Be the first to share your thoughts!
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-6">
+                {review?.reviews?.map((rev) => (
+                  <div
+                    key={rev._id}
+                    className="flex flex-col gap-3 pb-6 border-b border-gray-100 last:border-0"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center font-bold text-sm uppercase">
+                          {rev.user?.firstName?.charAt(0) || "U"}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-gray-900">
+                            {rev.user?.firstName} {rev.user?.lastName}
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            Verified Buyer
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex text-black">
+                        {[...Array(5)].map((_, i) => (
+                          <span
+                            key={i}
+                            className={
+                              i < rev.rating ? "opacity-100" : "opacity-30"
+                            }
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-semibold text-gray-900">
-                        {rev.user?.firstName} {rev.user?.lastName}
+                    <div className="flex justify-between">
+                      {" "}
+                      <p className="text-gray-600 text-sm md:text-base leading-relaxed pl-13">
+                        {rev.comment || "This user didn't write a comment."}
                       </p>
-                      <p className="text-xs text-gray-400">Verified Buyer</p>
+                      <button
+                        onClick={async () => {
+                          if (!user) {
+                            alert("Please login first to delete a review.");
+                            return;
+                          }
+
+                          if (
+                            window.confirm(
+                              "Are you sure you want to delete your review?",
+                            )
+                          ) {
+                            deleteReview(rev._id);
+                            await getProductReviews(id);
+                          }
+                        }}
+                        className="text-red-500 hover:text-red-700 text-xs font-semibold uppercase tracking-wider mt-2 transition-colors"
+                      >
+                        <Trash />
+                      </button>
                     </div>
                   </div>
-                  <div className="flex text-black">
-                    {[...Array(5)].map((_, i) => (
-                      <span
-                        key={i}
-                        className={
-                          i < rev.rating ? "opacity-100" : "opacity-30"
-                        }
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="w-full lg:w-[40%]">
+            <div className="bg-white border border-gray-200 p-6 md:p-8 sticky top-24">
+              <h3 className="text-xl font-semibold uppercase tracking-wider mb-6">
+                Write a Review
+              </h3>
+
+              <form
+                onSubmit={handleSubmitReview}
+                className="flex flex-col gap-5"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Your Rating
+                  </label>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        type="button"
+                        key={star}
+                        onClick={() => setRating(star)}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        className="focus:outline-none transition-transform hover:scale-110"
                       >
-                        ★
-                      </span>
+                        <Star
+                          size={28}
+                          className={
+                            star <= (hoverRating || rating)
+                              ? "fill-black text-black"
+                              : "text-gray-300"
+                          }
+                        />
+                      </button>
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-600 text-sm md:text-base leading-relaxed pl-13">
-                  {rev.comment || "This user didn't write a comment."}
-                </p>
-              </div>
-            ))}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Your Review
+                  </label>
+                  <textarea
+                    rows={4}
+                    required
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    placeholder="What did you like or dislike? How was the fit?"
+                    className="w-full border border-gray-300 p-3 text-sm focus:outline-none focus:border-black resize-none"
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loadingReview || !user}
+                  className={`w-full py-4 text-xs font-semibold uppercase tracking-widest text-white transition-colors
+                    ${loadingReview || !user ? "bg-gray-400 cursor-not-allowed" : "bg-black hover:bg-neutral-800"}`}
+                >
+                  {!user
+                    ? "Login to Review"
+                    : loadingReview
+                      ? "Submitting..."
+                      : "Submit Review"}
+                </button>
+              </form>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

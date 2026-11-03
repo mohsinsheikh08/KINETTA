@@ -17,7 +17,10 @@ const DekstopNavbar = () => {
     getCart();
   }, []);
 
-  const totalProducts = cart?.items.length;
+  const isNullProduct =
+    cart?.items.filter((item) => item.product !== null) || "0";
+
+  const totalProducts = isNullProduct.length;
 
   useEffect(() => {
     let lastScrollY = window.scrollY;

@@ -1,4 +1,5 @@
-import { cartProduct, User } from "./cart.types";
+import { cartProduct } from "./cart.types";
+import { User } from "./auth.types";
 
 export interface addReview {
   rating: number;
@@ -31,11 +32,12 @@ export interface getProductReviews {
 }
 
 export interface ReviewStructure {
-  loading: boolean;
+  loadingReview: boolean;
   error: null | string;
   addReview: (data: addReview) => Promise<void>;
   deleteReview: (id: string) => Promise<void>;
   getProductReviews: (id: string) => Promise<void>;
   reviews: Review[];
   review: getProductReviews| null;
+  deleteReviewLoading: boolean
 }

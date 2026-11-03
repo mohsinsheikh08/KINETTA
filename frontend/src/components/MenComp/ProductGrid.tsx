@@ -47,7 +47,7 @@ const ProductGrid = ({ category, heading }: categoryType) => {
           {Mens.map((product) => {
             const isProductInWishlist = wishlistIds.has(product._id);
             return (
-              <div key={product._id} className="h-140">
+              <div key={product._id} className="">
                 <Link href={`/product/${product._id}`}>
                   <div className="relative w-full group aspect-[4/5] bg-gray-50 overflow-hidden group cursor-pointer">
                     <div>
@@ -94,9 +94,8 @@ const ProductGrid = ({ category, heading }: categoryType) => {
                   </div>
                 </Link>
                 <div className="w-full mt-3 flex flex-col gap-3 px-1">
-                  {/* 2. Product Name and Heart Icon Section */}
+
                   <div className="flex justify-between items-start gap-2">
-                    {/* Product Name */}
                     <p className="text-[13px] md:text-[16px] font-medium text-gray-900 tracking-wide truncate">
                       {product.productName}
                     </p>
