@@ -33,7 +33,7 @@ router.post("/login", loginUser);
 
 router.post("/logout", tokenChecker, logoutUser);
 
-router.get("/me", tokenChecker, getMe);
+router.get("/me", getMe);
 
 router.post("/admin-check", adminCheckLimiter, adminCheck);
 
