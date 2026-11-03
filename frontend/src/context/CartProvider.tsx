@@ -39,7 +39,6 @@ const CartProvider = ({ children }: childrenType) => {
       const result = await cartService.getCart();
       setCart(result);
     } catch (err) {
-      setCart(null);
       if (axios.isAxiosError(err)) {
         console.log(err.response?.data?.message || "Cart not found!");
       }
@@ -110,7 +109,7 @@ const CartProvider = ({ children }: childrenType) => {
     updateCart,
     deleteProductInCart,
     clearCart,
-    loadingSpinner,
+    loadingSpinner
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

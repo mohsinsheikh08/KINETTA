@@ -52,8 +52,8 @@ const registerUser = async (req: Request, res: Response) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.status(201).json({
@@ -103,8 +103,8 @@ const loginUser = async (req: Request, res: Response) => {
     );
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     return res.status(200).json({
@@ -131,8 +131,8 @@ const logoutUser = async (req: Request, res: Response) => {
     const token = req.cookies.token;
     res.clearCookie("token", {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
     });
     if (token) {
       await tokenBlacklistModel.create({
@@ -151,26 +151,13 @@ const logoutUser = async (req: Request, res: Response) => {
 
 const getMe = async (req: AuthReports, res: Response) => {
   try {
-    const token = req.cookies.token;
-    if (!token) {
+    const userId = req.user?.id;
+    if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-
-    const decoded = jwt.verify(
-      token,
-      (process.env.JWT_SECRET as string) || "default_secret",
-    ) as { id: string; email: string; role: string };
-    if (!decoded.id) {
-      return res.status(200).json({ user: null });
-    }
-
-    const user = await userModel.findById(decoded.id).select("-password");
+    const user = await userModel.findById(userId).select("-password");
     if (!user) {
-      return res.status(200).json({ user: null });
-    }
-
-    if (!req.cookies?.token) {
-      return res.status(200).json({ user: null });
+      return res.status(404).json({ message: "User not found" });
     }
     return res.status(200).json({
       message: "User fetched successfully",
