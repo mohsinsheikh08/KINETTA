@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Trash2, ArrowRight, Minus, Plus, ShoppingBag } from "lucide-react";
 import Empty from "@/src/components/LandingComp/Empty";
 import LoadingSpinner from "../LandingComp/LoadingSpinner";
+import useAuth from "@/src/hooks/useAuth";
 
 const formatPrice = (value: number) =>
   new Intl.NumberFormat("en-PK", {
@@ -14,12 +15,34 @@ const formatPrice = (value: number) =>
     maximumFractionDigits: 0,
   }).format(value || 0);
 const CartPageComp = () => {
-  const { cart, loadingSpinner, getCart, updateCart, deleteProductInCart } = useCart();
-
+  const { cart, loadingSpinner, getCart, updateCart, deleteProductInCart } =
+    useCart();
+  const { user, loading } = useAuth();
   useEffect(() => {
-    getCart();
-  }, []);
+    if (!loading && user) {
+      getCart();
+    }
+  }, [user, loading]);
 
+  if (!loading && !user) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-[#f7f7f5] px-4">
+        <div className="flex flex-col items-center justify-center">
+          <Empty />
+          <h2 className="mt-6 text-2xl font-medium">Please Login</h2>
+          <p className="mt-2 text-neutral-500">
+            You need to login to view your cart.
+          </p>
+          <Link
+            href="/login"
+            className="mt-8 inline-flex items-center justify-center bg-black text-white px-8 py-3 text-[11px] md:text-xs font-medium uppercase tracking-[0.25em] transition-all duration-300 hover:bg-neutral-800"
+          >
+            Login Now
+          </Link>
+        </div>
+      </div>
+    );
+  }
   if (loadingSpinner) {
     return <LoadingSpinner />;
   }
