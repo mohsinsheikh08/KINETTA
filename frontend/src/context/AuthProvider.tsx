@@ -59,7 +59,7 @@ const AuthProvider = ({ children }: childrenType) => {
       setError(null);
       await authService.logout();
 
-      localStorage.removeItem("LoggedIn"); 
+      localStorage.removeItem("LoggedIn");
       setUser(null);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -77,7 +77,7 @@ const AuthProvider = ({ children }: childrenType) => {
     } catch (err) {
       setUser(null);
       if (axios.isAxiosError(err) && err.response?.status === 401) {
-        localStorage.removeItem("LoggedIn")
+        localStorage.removeItem("LoggedIn");
       } else {
         setError("User not found!");
         if (axios.isAxiosError(err)) {
@@ -142,11 +142,7 @@ const AuthProvider = ({ children }: childrenType) => {
   };
   useEffect(() => {
     const getUser = async () => {
-      const islogin = localStorage.getItem("LoggedIn");
-      console.log(islogin);
-      if (islogin) {
-        await getMe();
-      }
+      await getMe();
     };
     getUser();
   }, []);

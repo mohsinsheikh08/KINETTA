@@ -3,13 +3,32 @@ import Image from "next/image";
 import { UserRound, Heart, Search, Handbag, Menu } from "lucide-react";
 import useProduct from "@/src/hooks/useProduct";
 import Link from "next/link";
+import useAuth from "@/src/hooks/useAuth";
+import useCart from "@/src/hooks/useCart";
+import { useEffect } from "react";
 const Navbar = () => {
-  const {isOpen,setIsOpen} = useProduct();
+  const { isOpen, setIsOpen } = useProduct();
+  const { user } = useAuth();
+  const { cart, getCart } = useCart();
+  useEffect(() => {
+    if (user) {
+      getCart();
+    }
+  }, []);
+  const isNullProduct =
+    cart?.items.filter((item) => item.product !== null).length ?? 0;
+
   return (
     <div className="flex flex-col  md:hidden ">
       <div className="w-full h-10 flex justify-between p-4 md:p-5">
         <div className="flex items-center justify-between  gap-5">
-          <button onClick={() => {setIsOpen(!isOpen)}} ><Menu size={20} /></button>
+          <button
+            onClick={() => {
+              setIsOpen(!isOpen);
+            }}
+          >
+            <Menu size={20} />
+          </button>
           <Search size={20} />
         </div>
         <div className="flex items-center">
@@ -22,9 +41,21 @@ const Navbar = () => {
           />
         </div>
         <div className="flex items-center justify-between gap-5">
-          <UserRound size={20} />
-          <Heart size={20} />
-         <Link href="/cart"> <Handbag size={20} /></Link>
+          <Link href="/user">
+            {" "}
+            <UserRound className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+          </Link>
+          <Link href="/wishlist">
+            {" "}
+            <Heart className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+          </Link>
+          <Link href="/cart" className="relative">
+            {" "}
+            <Handbag className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
+            <p className="absolute  -top-[0.2px] rounded-full px-1 text-[10px] -left-1 font-body bg-black text-white">
+              {isNullProduct}
+            </p>
+          </Link>
         </div>
       </div>
     </div>

@@ -63,10 +63,10 @@ const ProductPage = () => {
     return productId === id;
   });
 
+  const findUser = review?.reviews.some((review) => review._id == user?._id);
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment.trim()) return;
-    console.log("Submitting Review:", { productId: id, rating, comment });
     setTimeout(async () => {
       addReview({ product: id, rating: rating, comment: comment });
       setComment("");
@@ -354,7 +354,7 @@ const ProductPage = () => {
                       <p className="text-gray-600 text-sm md:text-base leading-relaxed pl-13">
                         {rev.comment || "This user didn't write a comment."}
                       </p>
-                      <button
+                     {findUser ?  <button
                         onClick={async () => {
                           if (!user) {
                             alert("Please login first to delete a review.");
@@ -373,7 +373,7 @@ const ProductPage = () => {
                         className="text-red-500 hover:text-red-700 text-xs font-semibold uppercase tracking-wider mt-2 transition-colors"
                       >
                         <Trash />
-                      </button>
+                      </button> : ""}
                     </div>
                   </div>
                 ))}

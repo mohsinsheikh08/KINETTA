@@ -22,10 +22,7 @@ const DekstopNavbar = () => {
   }, []);
 
   const isNullProduct =
-    cart?.items.filter((item) => item.product !== null) || "0";
-
-  const totalProducts = isNullProduct.length;
-
+    cart?.items.filter((item) => item.product !== null).length ?? 0;
   useEffect(() => {
     let lastScrollY = window.scrollY;
     const handleScroll = () => {
@@ -123,10 +120,6 @@ const DekstopNavbar = () => {
               </span>
             </Link>
           </li>
-          {/* 
-          <li>
-            <Search className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
-          </li> */}
         </ul>
 
         {/* LOGO */}
@@ -155,7 +148,7 @@ const DekstopNavbar = () => {
             {" "}
             <Handbag className="w-5 h-5 sm:w-6 sm:h-6 hover:text-[#282D31] transition duration-150 cursor-pointer pb-1 inline-block" />
             <p className="absolute -top-[0.5px] rounded-full px-1 -left-1 font-body bg-black text-white text-xs">
-              {totalProducts}
+              {isNullProduct}
             </p>
           </Link>
         </div>

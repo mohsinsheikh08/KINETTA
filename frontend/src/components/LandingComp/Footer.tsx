@@ -3,14 +3,14 @@ import {
   faTwitter,
   faInstagram,
   faFacebook,
-  faYoutube,
+  faGithub,
 } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Footer = () => {
   return (
     <footer className="w-full bg-[#282D31] text-white">
       <div className="max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 py-16">
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
           <div className="col-span-2 lg:col-span-2">
             <h2 className="font-heading font-bold text-3xl tracking-wider mb-4">
               KINETTA
@@ -21,10 +21,26 @@ const Footer = () => {
             </p>
 
             <div className="flex gap-4 pt-4">
-              <FontAwesomeIcon icon={faTwitter} className="w-5 h-5 " />
-              <FontAwesomeIcon icon={faYoutube} className="w-5 h-5" />
-              <FontAwesomeIcon icon={faInstagram} className="w-5 h-5" />
-              <FontAwesomeIcon icon={faFacebook} className="w-5 h-5" />
+              <a href="https://x.com/home" target="_blank">
+                <FontAwesomeIcon icon={faTwitter} className="w-5 h-5 " />
+              </a>
+              <a href="https://github.com/mohsinsheikh08/" target="_blank">
+                <FontAwesomeIcon icon={faGithub} className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.instagram.com/mohsin_shahid_sheikh/"
+                target="_blank"
+              >
+                {" "}
+                <FontAwesomeIcon icon={faInstagram} className="w-5 h-5" />
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=100021919634547"
+                target="_blank"
+              >
+                {" "}
+                <FontAwesomeIcon icon={faFacebook} className="w-5 h-5" />
+              </a>
             </div>
           </div>
           <div>
