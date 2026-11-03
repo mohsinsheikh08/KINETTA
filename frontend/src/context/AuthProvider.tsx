@@ -72,13 +72,9 @@ const AuthProvider = ({ children }: childrenType) => {
       setUser(result);
     } catch (err) {
       setUser(null);
-      setError("User not found!");
       if (axios.isAxiosError(err) && err.response?.status === 401) {
-      } else {
-        setError("User not found!");
-        if (axios.isAxiosError(err)) {
-          console.log(err.response?.data?.message || "User not found!");
-        }
+      }else{
+        setError("User not found!")
       }
     } finally {
       setLoading(false);
@@ -121,10 +117,10 @@ const AuthProvider = ({ children }: childrenType) => {
 
   const deleteUser = async (id: string) => {
     try {
-      setLoading(true); 
+      setLoading(true);
       setError(null);
 
-      await authService.deleteUser(id); 
+      await authService.deleteUser(id);
       setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
     } catch (err) {
       if (axios.isAxiosError(err)) {
