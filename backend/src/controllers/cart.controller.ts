@@ -72,9 +72,16 @@ const createCart = async (req: AuthReports, res: Response) => {
 
 const getCart = async (req: AuthReports, res: Response) => {
   try {
-    const userId = req.user?.id;
+    const token = req.cookies.token;
 
-    if (!userId) {
+   const decoded = jwt.verify(
+         token,
+         (process.env.JWT_SECRET as string) || "default_secret",
+       ) as { id: string; email: string; role: string }
+
+
+
+    if (!decoded.id) {
       return res.status(404).json({
         message: "cart is not avaialable!",
         sucess: false,

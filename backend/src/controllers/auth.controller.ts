@@ -151,12 +151,20 @@ const logoutUser = async (req: Request, res: Response) => {
 
 const getMe = async (req: AuthReports, res: Response) => {
   try {
-    const userId = req.user?.id;
-    if (!userId) {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const decoded = jwt.verify(
+      token,
+      (process.env.JWT_SECRET as string) || "default_secret",
+    ) as { id: string; email: string; role: string };
+    if (!decoded.id) {
       return res.status(200).json({ user: null });
     }
 
-    const user = await userModel.findById(userId).select("-password");
+    const user = await userModel.findById(decoded.id).select("-password");
     if (!user) {
       return res.status(200).json({ user: null });
     }
