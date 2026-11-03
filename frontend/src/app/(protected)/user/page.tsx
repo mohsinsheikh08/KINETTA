@@ -14,12 +14,6 @@ const ProfilePage = () => {
   useEffect(() => {
     getMe();
   }, []);
-console.log(user?._id)
-  if(user?._id){
-    console.log("User is get");
-  }else{
-    console.log("User getting are failed!")
-  }
 
   useEffect(() => {
     if (allOrders) allOrders();
