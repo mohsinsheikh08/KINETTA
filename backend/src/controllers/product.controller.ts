@@ -95,11 +95,13 @@ const getAllProducts = async (req: AuthReports, res: Response) => {
   try {
     const products = await productModel
       .find()
-      .populate("createdBy", "firstName lastName");
+      .populate("createdBy", "firstName lastName")
+      .catch(() => []);
 
-    if (products.length === 0) {
-      return res.status(409).json({
-        message: "Products are not avilable!",
+    if (!products || products.length === 0) {
+      return res.status(200).json({
+        message: "No products available",
+        products: [],
       });
     }
     return res.status(200).json({
