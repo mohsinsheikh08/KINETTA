@@ -131,8 +131,8 @@ const logoutUser = async (req: Request, res: Response) => {
     const token = req.cookies.token;
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
     });
     if (token) {
       await tokenBlacklistModel.create({
