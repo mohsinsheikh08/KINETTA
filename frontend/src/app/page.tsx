@@ -19,8 +19,12 @@ const Landing = () => {
   }, []);
 
   const productArray = Array.isArray(products) ? products : [];
-  const mensSection = productArray.filter((men) => men.category === "Men");
-  const womenSection = productArray.filter((women) => women.category === "Women");
+  const mensSection = productArray.filter(
+    (men) => men.category?.toLowerCase() === "men",
+  );
+  const womenSection = productArray.filter(
+    (women) => women.category?.toLowerCase() === "women",
+  );
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
