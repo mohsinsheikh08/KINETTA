@@ -153,11 +153,16 @@ const getMe = async (req: AuthReports, res: Response) => {
   try {
     const userId = req.user?.id;
     if (!userId) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(200).json({ user: null });
     }
+
     const user = await userModel.findById(userId).select("-password");
     if (!user) {
-      return res.status(404).json({ message: "User not found" });
+      return res.status(200).json({ user: null });
+    }
+
+    if (!req.cookies?.token) {
+      return res.status(200).json({ user: null });
     }
     return res.status(200).json({
       message: "User fetched successfully",
