@@ -1,5 +1,5 @@
 import express from "express";
-import cors from 'cors'
+import cors from "cors";
 import authRoutes from "./routes/auth.route";
 import cookieParser from "cookie-parser";
 import productRoutes from "./routes/product.route";
@@ -7,12 +7,14 @@ import cartRoutes from "./routes/cart.route";
 import orderRoutes from "./routes/order.route";
 import chatRoutes from "./routes/chat.route";
 import reviewRoutes from "./routes/review.route";
-import wishlistRoutes from './routes/wishlist.route'
+import wishlistRoutes from "./routes/wishlist.route";
 const app = express();
-app.use(cors({
-    origin: "http://localhost:3000",
-    credentials: true
-}))
+app.use(
+  cors({
+    origin: "https://kinetta-5gk4.vercel.app",
+    credentials: true,
+  }),
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/order", orderRoutes);
@@ -21,5 +23,5 @@ app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/review", reviewRoutes);
-app.use("/api/wishlist", wishlistRoutes)
+app.use("/api/wishlist", wishlistRoutes);
 export default app;
