@@ -10,20 +10,17 @@ import useProduct from "../hooks/useProduct";
 import { Product } from "../types/product.types";
 import MobileSidebar from "../components/LandingComp/MobileSidebar";
 const Landing = () => {
-  const [AllProducts, setAllProducts] = useState<Product[]>([]);
-  const { getAllProducts } = useProduct();
+  const { getAllProducts, products } = useProduct();
   useEffect(() => {
     const getProducts = async () => {
-      const response: Product[] = await getAllProducts();
-      setAllProducts(response);
+      await getAllProducts();
     };
     getProducts();
   }, []);
 
-  const mensSection = AllProducts.filter((men) => men.category === "Men");
-  const womenSection = AllProducts.filter(
-    (women) => women.category === "Women",
-  );
+  const productArray = Array.isArray(products) ? products : [];
+  const mensSection = productArray.filter((men) => men.category === "Men");
+  const womenSection = productArray.filter((women) => women.category === "Women");
   useEffect(() => {
     window.scrollTo({ top: 0 });
   }, []);
@@ -42,13 +39,16 @@ const Landing = () => {
       </div>
       <div>
         <DekstopNavbar />
-       <div className="hidden md:flex"> <Video
-          secondHeading="Engineered for Performance"
-          mainHeading="MEN'S COLLECTION"
-          posterSrc="https://ik.imagekit.io/mohsinsheikh08/kinetta/product/men_landing_page_image.jpg?updatedAt=1791542499393"
-          videoSrc="https://res.cloudinary.com/epkrapga/video/upload/v1791545885/MenVideoGymWearMobile.mp4"
-          link="/mens"
-        /></div>
+        <div className="hidden md:flex">
+          {" "}
+          <Video
+            secondHeading="Engineered for Performance"
+            mainHeading="MEN'S COLLECTION"
+            posterSrc="https://ik.imagekit.io/mohsinsheikh08/kinetta/product/men_landing_page_image.jpg?updatedAt=1791542499393"
+            videoSrc="https://res.cloudinary.com/epkrapga/video/upload/v1791545885/MenVideoGymWearMobile.mp4"
+            link="/mens"
+          />
+        </div>
         <h1 className="font-heading font-semibold text-3xl pt-7 pl-7 sm:text-5xl">
           MEN&apos;S COLLECTION
         </h1>
