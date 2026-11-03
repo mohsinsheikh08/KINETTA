@@ -14,6 +14,7 @@ app.use(
   cors({
     origin: ["http://localhost:3000", "https://kinetta-5gk4.vercel.app"],
     credentials: true,
+      methods: ["GET", "POST", "PUT", "DELETE"],
   }),
 );
 app.use(cookieParser());
