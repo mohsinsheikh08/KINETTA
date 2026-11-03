@@ -7,7 +7,7 @@ import OrderProvider from "../context/OrderProvider";
 import ReviewProvider from "../context/ReviewProvider";
 import WishlistProvider from "../context/WishlistProvider";
 import { Montserrat, Roboto } from "next/font/google";
-import Motion from "../utils/Mtion";
+import Motion from "../utils/Motion";
 
 const montserrat = Montserrat({
   variable: "--font-heading",

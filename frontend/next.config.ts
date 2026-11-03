@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     remotePatterns: [
       {
@@ -16,8 +17,8 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    imgOptTimeoutInSeconds: 30
-  }
+    imgOptTimeoutInSeconds: 30,
+  },
 };
 
 export default nextConfig;

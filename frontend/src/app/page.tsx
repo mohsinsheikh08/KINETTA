@@ -60,7 +60,7 @@ const Landing = () => {
                 id={men.id}
                 backImage={men?.images[1]}
                 frontImage={men.thumbnail}
-                price={men.price}
+                price={Number(men.price)}
                 detail={men.productName}
               />
             );
@@ -78,7 +78,7 @@ const Landing = () => {
                 id={women.id}
                 backImage={women?.images[1]}
                 frontImage={women.thumbnail}
-                price={women.price}
+                price={Number(women.price)}
                 detail={women.productName}
               />
             );
