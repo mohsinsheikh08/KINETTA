@@ -7,14 +7,18 @@ import useProduct from "@/src/hooks/useProduct";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import useCart from "@/src/hooks/useCart";
+import useAuth from "@/src/hooks/useAuth";
 
 const DekstopNavbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const { setIsOpen, setIsWomenOpen } = useProduct();
   const { cart, getCart } = useCart();
+  const { user } = useAuth();
   const pathname = usePathname();
   useEffect(() => {
-    getCart();
+    if (user) {
+      getCart();
+    }
   }, []);
 
   const isNullProduct =

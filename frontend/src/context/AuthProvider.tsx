@@ -26,6 +26,7 @@ const AuthProvider = ({ children }: childrenType) => {
       setSubmitting(true);
       const result = await authService.register(data);
       setUser(result);
+      localStorage.setItem("LoggedIn", "true");
       navigate.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -41,6 +42,7 @@ const AuthProvider = ({ children }: childrenType) => {
       setSubmitting(true);
       const result = await authService.login(data);
       setUser(result);
+      localStorage.setItem("LoggedIn", "true");
       navigate.push("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -56,6 +58,8 @@ const AuthProvider = ({ children }: childrenType) => {
       setLoading(true);
       setError(null);
       await authService.logout();
+
+      localStorage.removeItem("LoggedIn"); 
       setUser(null);
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -72,8 +76,8 @@ const AuthProvider = ({ children }: childrenType) => {
       setUser(result);
     } catch (err) {
       setUser(null);
-      setError("User not found!");
       if (axios.isAxiosError(err) && err.response?.status === 401) {
+        localStorage.removeItem("LoggedIn")
       } else {
         setError("User not found!");
         if (axios.isAxiosError(err)) {
@@ -121,10 +125,10 @@ const AuthProvider = ({ children }: childrenType) => {
 
   const deleteUser = async (id: string) => {
     try {
-      setLoading(true); 
+      setLoading(true);
       setError(null);
 
-      await authService.deleteUser(id); 
+      await authService.deleteUser(id);
       setUsers((prevUsers) => prevUsers.filter((user) => user._id !== id));
     } catch (err) {
       if (axios.isAxiosError(err)) {
@@ -138,7 +142,11 @@ const AuthProvider = ({ children }: childrenType) => {
   };
   useEffect(() => {
     const getUser = async () => {
-      await getMe();
+      const islogin = localStorage.getItem("LoggedIn");
+      console.log(islogin);
+      if (islogin) {
+        await getMe();
+      }
     };
     getUser();
   }, []);
