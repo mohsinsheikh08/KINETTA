@@ -9,6 +9,7 @@ import chatRoutes from "./routes/chat.route";
 import reviewRoutes from "./routes/review.route";
 import wishlistRoutes from "./routes/wishlist.route";
 const app = express();
+app.set("trust proxy", 1);
 app.use(
   cors({
     origin: "https://kinetta-5gk4.vercel.app",
