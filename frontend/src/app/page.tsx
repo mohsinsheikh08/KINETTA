@@ -9,9 +9,9 @@ import Video from "../components/LandingComp/Video";
 import useProduct from "../hooks/useProduct";
 import { Product } from "../types/product.types";
 import MobileSidebar from "../components/LandingComp/MobileSidebar";
-
+import Loading from "../components/LandingComp/Loading";
 const Landing = () => {
-  const { getAllProducts, products } = useProduct();
+  const { getAllProducts, products, loading } = useProduct();
 
   useEffect(() => {
     const getProducts = async () => {
@@ -24,16 +24,18 @@ const Landing = () => {
     window.scrollTo({ top: 0, behavior: "instant" });
   }, []);
 
+  if (loading) {
+    return <Loading />;
+  }
   const productArray = Array.isArray(products) ? products : [];
   const mensSection = productArray.filter(
-    (men) => men.category?.toLowerCase() === "men"
+    (men) => men.category?.toLowerCase() === "men",
   );
   const womenSection = productArray.filter(
-    (women) => women.category?.toLowerCase() === "women"
+    (women) => women.category?.toLowerCase() === "women",
   );
 
   return (
-
     <div className="w-full min-h-screen overflow-x-hidden flex flex-col bg-white">
       <MobileSidebar />
 
